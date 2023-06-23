@@ -1,6 +1,6 @@
 const Login = {
   template: `
-  <div>
+  <section>
 
 <!--------------------------------------------------------------------------------------------------------->
     <div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
@@ -122,7 +122,8 @@ const Login = {
     </section>
 
     
-  </div>
+  </section>
+
   `,
   data() {
     return {
@@ -351,7 +352,8 @@ const Home = {
 
 const UserSettings = {
   template: `
-    <div>
+  <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="user-settings">
       <h1>User Settings</h1>
       <div v-if="isLoggedIn">
         <label for="firstName">First Name:</label>
@@ -377,6 +379,8 @@ const UserSettings = {
         <p>Please log in to view and modify your user settings.</p>
       </div>
     </div>
+  </div>
+
   `,
   name: "UserSettings",
   data() {
