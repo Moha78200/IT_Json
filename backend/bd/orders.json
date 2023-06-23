@@ -1,0 +1,19 @@
+[
+    {
+        "orderID":1,
+        "deliveryDate":"2019-01-01",
+        "userID":1,
+        "deliveryAddress":"chez john",
+        "products":[
+            {
+                "id": 2,
+                "quantity":1
+            },
+            {
+                "id": 7,
+                "quantity":3
+            }
+        ],
+        "status": "Pending reception"
+    }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "userID": 1,
+    "firstName": "John",
+    "lastName": "Doe",
+    "phoneNumber": "1234567890",
+    "email": "johndoe@example.com",
+    "password": "123john",
+    "billingAddress": "123 Main St",
+    "type": "admin"
+  },
+  {
+    "userID": 2,
+    "firstName": "Jane",
+    "lastName": "Smith",
+    "phoneNumber": "9876543210",
+    "email": "janesmith@example.com",
+    "password": "321jane",
+    "billingAddress": "456 Elm St",
+    "type": "user"
+  },
+  {
+    "userID": 3,
+    "firstName": "Moha",
+    "lastName": "Med",
+    "phoneNumber": "1212121212",
+    "email": "moha@med.com",
+    "password": "123moha",
+    "billingAddress": "chez mohamed",
+    "type": "user"
+  },
+  {
+    "userID": 4,
+    "firstName": "Noa",
+    "lastName": "Noooo",
+    "phoneNumber": "172737178",
+    "email": "noa@nono.com",
+    "password": "123noa",
+    "billingAddress": "chez noa",
+    "type": "user"
+  },
+  {
+    "userID": 5,
+    "firstName": "testtest",
+    "lastName": "ing2",
+    "phoneNumber": "0000111101",
+    "email": "test@ing.com",
+    "password": "123test",
+    "billingAddress": "testing center",
+    "type": "user"
+  }
+]
