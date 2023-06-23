@@ -473,16 +473,18 @@ nav .nav-container #icons i:hover {
   }
 
   .user-settings button {
-    background-color: #4caf50;
+    background-color: rgb(59 130 246);
     color: white;
     padding: 10px 15px;
     border: none;
     border-radius: 3px;
     cursor: pointer;
+    text-align: center;
+    
   }
 
   .user-settings button:hover {
-    background-color: #45a049;
+    background-color: rgb(37 99 235);
   }
 
   .user-settings p {
