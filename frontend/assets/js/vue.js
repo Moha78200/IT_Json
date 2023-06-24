@@ -468,6 +468,7 @@ const UserSettings = {
 
 const OrderItem = {
   template: `
+  
     <div class="order-item home-container">
 
     <div class="card-cart-container">
@@ -485,6 +486,7 @@ const OrderItem = {
     </div>
     </div>
     </div>
+
   `,
   props: {
     productProp: {
@@ -527,27 +529,79 @@ const OrderItem = {
 
 const OrdersList = {
   template: `
-    <div>
+  <!--
+    <div class="Container">
       <h1>List of orders</h1>
       <div v-if="orders.length > 0">
-        <div v-for="order in orders" :key="order.orderID">
-          <h2>Order ID: {{ order.orderID }}</h2>
-          <p>Expected Delivery Date: {{ order.deliveryDate }}</p>
-          <p>Delivery Address: {{ order.deliveryAddress }}</p>
-          <h3>Products:</h3>
-          <order-item
-            v-for="product in order.products"
-            :key="product.id"
-            :productProp="product"
-          />
-          <p>Delivery Status: {{ order.status }}</p>
-          <button v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
+        <div v-for="order in orders" :key="order.orderID" class="order-info">
+          <div class="left">
+            <h2>Order ID: {{ order.orderID }}</h2>
+              <p>Expected Delivery Date: {{ order.deliveryDate }}</p>
+              <p>Delivery Address: {{ order.deliveryAddress }}</p>
+              <p>Delivery Status: {{ order.status }}</p>
+              <button v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
+            </div>
+            <div class="right">
+              <h3>Products:</h3>
+              <div class="product-images">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+              </div>
+          </div>
         </div>
+
+
       </div>
       <div v-else>
         <p>No orders found.</p>
       </div>
     </div>
+    -->
+
+    <div class="overflow-x-auto rounded-lg border border-gray-200">
+      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
+        <thead class="ltr:text-left rtl:text-right table-heading">
+          <tr>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Order ID
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Expected Delivery Date
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Delivery Address
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Delivery Status
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Products
+            </th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200">
+          <tr v-for="order in orders" :key="order.orderID">
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              {{ order.orderID }}
+            </td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryDate }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryAddress }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.status }}</td>
+
+
+            <td colspan="4"> <!-- Utilisation de colspan pour fusionner les cellules sur toute la largeur -->
+              <div class="product-images">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+              </div>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
   `,
   name: "OrdersList",
   components: {
