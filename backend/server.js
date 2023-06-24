@@ -11,7 +11,47 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
+app.post('/orders', (req, res) => {
+  try {
+    const {  deliveryDate, userID, deliveryAddress, products } = req.body;
 
+    // Read the existing orders from the JSON file
+    let ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
+
+    // Generate a new order ID
+    // Check if any order already has the same orderID
+    let newOrderID = ordersData.find(order => order.orderID === ordersData.length + 1);
+    if (newOrderID) {
+      // If an order with the same orderID exists, generate a new unique orderID
+      const maxOrderId = Math.max(...ordersData.map(order => order.orderID));
+      newOrderID = maxOrderId + 1;
+    } else {
+      // If no order with the same orderID exists, use the current count + 1 as the new orderID
+      newOrderID = ordersData.length + 1;
+    }
+
+    // Create a new order object
+    const newOrder = {
+      orderID: newOrderID,
+      deliveryDate,
+      userID,
+      deliveryAddress,
+      products: products.map(product => ({ id: product.id, quantity: product.quantity })),
+      status: 'Pending Delivery' // Set the initial status as 'Pending Delivery'
+    };
+
+    // Add the new order to the orders array
+    ordersData.push(newOrder);
+
+    // Write the updated orders array back to the JSON file
+    fs.writeFileSync('./bd/orders.json', JSON.stringify(ordersData, null, 2));
+
+    res.status(200).json({ message: 'Order created successfully.', orderID: newOrderID });
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ error: 'An error occurred while creating the order.' });
+  }
+});
 
 app.post('/register', (req, res) => {
   try {

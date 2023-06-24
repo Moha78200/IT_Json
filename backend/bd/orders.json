@@ -1,7 +1,7 @@
 [
   {
     "orderID": 1,
-    "deliveryDate": "2019-01-01",
+    "deliveryDate": "2023-06-29T10:29:51.200Z",
     "userID": 1,
     "deliveryAddress": "chez john",
     "products": [
@@ -15,5 +15,22 @@
       }
     ],
     "status": "Delivered"
+  },
+  {
+    "orderID": 2,
+    "deliveryDate": "2023-06-29T10:29:51.200Z",
+    "userID": 1,
+    "deliveryAddress": "123 Main St",
+    "products": [
+      {
+        "id": 5,
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "quantity": 1
+      }
+    ],
+    "status": "Pending Delivery"
   }
 ]

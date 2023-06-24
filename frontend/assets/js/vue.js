@@ -276,6 +276,29 @@ const Home = {
     },
   },
   methods: {
+    createOrder() {
+      // Create an order object with the necessary information
+      const order = {
+        userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID, 
+        products: this.cart,
+        deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // Set delivery date to 5 days from now
+        deliveryAddress: JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress, 
+      };
+  
+      // Make a POST request to save the order into the database
+      axios
+        .post('http://localhost:3000/orders', order)
+        .then((response) => {
+          // Clear the cart after successfully creating the order
+          this.cart = [];
+          alert('Order created successfully!');
+        })
+        .catch((error) => {
+          console.error('Error creating order:', error);
+          alert('An error occurred while creating the order.');
+        });
+    },
+  
     isProductInStock(product) {
       return product.stock > 0;
     },
