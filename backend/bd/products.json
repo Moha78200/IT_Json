@@ -109,20 +109,34 @@
     "name": "XBOX ONE X",
     "price": 450,
     "img": "assets/img/XBOXoneX.png",
-    "stock": 12
+    "stock": 11
   },
   {
     "id": 17,
     "name": "Nintendo SwitchOLED",
     "price": 300,
     "img": "assets/img/SwitchOLED.png",
-    "stock": 33
+    "stock": 32
   },
   {
     "id": 18,
     "name": "PS5",
     "price": 450,
     "img": "assets/img/PS5.png",
+    "stock": 6
+  },
+  {
+    "id": 19,
+    "name": "Setup Pc Gamer",
+    "price": 1500,
+    "img": "assets/img/pc.png",
+    "stock": 0
+  },
+  {
+    "id": 20,
+    "name": "Oculus Rift",
+    "price": 299,
+    "img": "assets/img/Oculus.jpg",
     "stock": 7
   }
 ]
