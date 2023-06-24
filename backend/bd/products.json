@@ -25,7 +25,7 @@
     "name": "Elden Ring",
     "price": 8,
     "img": "assets/img/elden-ring.jpg",
-    "stock": 11
+    "stock": 9
   },
   {
     "id": 5,
@@ -67,14 +67,14 @@
     "name": "Sekiro: Shadows Die Twice",
     "price": 29,
     "img": "assets/img/sekiro.jpg",
-    "stock": 3
+    "stock": 1
   },
   {
     "id": 11,
     "name": "Spiderman",
     "price": 87,
     "img": "assets/img/spiderman.jpeg",
-    "stock": 2
+    "stock": 0
   },
   {
     "id": 12,

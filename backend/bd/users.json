@@ -58,5 +58,15 @@
     "password": "théo2",
     "billingAddress": "21 rue de bale",
     "type": "user"
+  },
+  {
+    "userID": 7,
+    "firstName": "nouveau",
+    "lastName": "compte",
+    "phoneNumber": "99999912",
+    "email": "nouveau@compte.com",
+    "password": "123123",
+    "billingAddress": "nouvelle addresse",
+    "type": "user"
   }
 ]
