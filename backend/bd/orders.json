@@ -134,7 +134,7 @@
         "quantity": 1
       }
     ],
-    "status": "Pending Delivery"
+    "status": "Delivered"
   },
   {
     "orderID": 10,
@@ -147,7 +147,6 @@
         "quantity": 3
       }
     ],
-    "status": "Pending Delivery"
+    "status": "Delivered"
   }
-  
 ]

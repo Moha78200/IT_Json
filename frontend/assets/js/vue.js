@@ -586,10 +586,15 @@ const OrdersList = {
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryDate }}</td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryAddress }}</td>
-            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.status }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
+              <div class="delivery-status">
+                {{ order.status }}
+                <br><br>
+                <button id="deliveryStatus" v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
+              </div>
+            </td>
 
-
-            <td colspan="4"> <!-- Utilisation de colspan pour fusionner les cellules sur toute la largeur -->
+            <td colspan="4">
               <div class="product-images">
                 <order-item v-for="product in order.products" :key="product.id" :productProp="product">
               </div>
@@ -599,6 +604,7 @@ const OrdersList = {
         </tbody>
       </table>
     </div>
+
 
 
 

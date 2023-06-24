@@ -440,6 +440,7 @@ nav .nav-container #icons i:hover {
   font-weight: bold;
 }
 
+/*--------------------------UserSettings-----------------------------*/
 
   .user-settings {
     max-width: 400px;
@@ -520,14 +521,20 @@ background-color: #fb2626;}
     height: auto;
     margin-right: 5px; /* Ajoute un espace entre les images */
   }
+
+  .delivery-status button {
+    background-color: rgb(59 130 246);
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    text-align: center;
+  }
   
+  .delivery-status button:hover{
+    background-color: rgb(37 99 235);
+  }
   
-
-
-
-  
-
-
-
   
   /*--------------------------XXXXXXXXXXXXXXXXXXXXXXXXXX-----------------------------*/
