@@ -573,11 +573,67 @@ const OrdersList = {
           <div class="product-images">
             <order-item v-for="product in order.products" :key="product.id" :productProp="product"/>
           </div>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
+        </div>
+
+
+      </div>
+      <div v-else>
+        <p>No orders found.</p>
+      </div>
+    </div>
+    -->
+
+    <div class="overflow-x-auto rounded-lg border border-gray-200">
+      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
+        <thead class="ltr:text-left rtl:text-right table-heading">
+          <tr>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Order ID
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Expected Delivery Date
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Delivery Address
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Delivery Status
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Products
+            </th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200">
+          <tr v-for="order in orders" :key="order.orderID">
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              {{ order.orderID }}
+            </td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryDate }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryAddress }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
+              <div class="delivery-status">
+                {{ order.status }}
+                <br><br>
+                <button id="deliveryStatus" v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
+              </div>
+            </td>
+
+            <td colspan="4">
+              <div class="product-images">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+              </div>
+            </td>
+            
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+
+
+
   `,
   name: "OrdersList",
   components: {
