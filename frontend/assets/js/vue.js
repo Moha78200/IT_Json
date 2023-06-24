@@ -831,6 +831,16 @@ const addProduct = {
       this.product.img = file;
     },
   },
+  beforeRouteEnter(to, from, next) {
+    // Check if the user is an admin 
+    const userType = JSON.parse(sessionStorage.getItem("loggedInUser")).type;
+
+    if (userType === 'admin') {
+      next();
+    } else {
+      next({ name: 'Home' }); // Redirect to the home page
+    }
+  },
 };
 
 
