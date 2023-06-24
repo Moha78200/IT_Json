@@ -15,9 +15,9 @@ const Login = {
 
       <!-- LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
       <div class="grid grid-cols-2">
-        <div>
+        <div class="LOGIN border border-black mt-0">
           <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-            <form v-if="!isLoggedIn" @submit="login" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+            <form v-if="!isLoggedIn" @submit="login" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4 border border-black">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Log In</h1>
               </div>
@@ -58,10 +58,10 @@ const Login = {
 
         <!--REGISTERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR-->
 
-        <div>
+        <div class="REGISTER border border-black">
         
           <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-            <form v-if="!isLoggedIn" @submit="register" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
+            <form v-if="!isLoggedIn" @submit="register" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4 border border-black">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Register</h1>
               </div>
@@ -539,7 +539,34 @@ const OrderItem = {
 
 const OrdersList = {
   template: `
-  <div>
+  <!--
+    <div class="Container">
+      <h1>List of orders</h1>
+      <div v-if="orders.length > 0">
+        <div v-for="order in orders" :key="order.orderID" class="order-info">
+          <div class="left">
+            <h2>Order ID: {{ order.orderID }}</h2>
+              <p>Expected Delivery Date: {{ order.deliveryDate }}</p>
+              <p>Delivery Address: {{ order.deliveryAddress }}</p>
+              <p>Delivery Status: {{ order.status }}</p>
+              <button v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
+            </div>
+            <div class="right">
+              <h3>Products:</h3>
+              <div class="product-images">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div v-else>
+        <p>No orders found.</p>
+      </div>
+    </div>
+    -->
+
     <div class="overflow-x-auto rounded-lg border border-gray-200">
       <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
         <thead class="ltr:text-left rtl:text-right table-heading">
