@@ -351,6 +351,29 @@ app.post('/addProduct', upload.single('img'), (req, res) => {
       fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
 });
 
+// fetch the liked products based on the list of id
+app.get('/wished', (req, res) => {
+  try {
+
+    const productIds = req.query.ids;
+
+    // Read the existing products from the JSON file
+    const productsData = JSON.parse(fs.readFileSync('./bd/products.json', 'utf-8'));
+
+    // Filter the products based on the provided product ids
+    const filteredProducts = productsData.filter(product => productIds.includes(parseInt(product.id)));
+
+    res.status(200).json(filteredProducts);
+    console.log("products fetched : ", filteredProducts)
+
+    
+  } catch (error) {
+    console.error('Error fetching product information:', error);
+    res.status(500).json({ error: 'An error occurred while fetching product information.' });
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
