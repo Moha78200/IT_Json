@@ -535,8 +535,6 @@ const OrderItem = {
   }
 };
 
-
-
 const OrdersList = {
   template: `
   <!--
@@ -672,6 +670,10 @@ const adminPage = {
   template: `
     <div>
       <h1>Admin Page</h1>
+
+      <router-link to="/add-product">
+        <button>Add Product</button>
+      </router-link>
 
       <h2>Products</h2>
       <ul>
