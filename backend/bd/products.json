@@ -11,7 +11,7 @@
     "name": "Bloodborne",
     "price": 20,
     "img": "assets/img/bloodborne.jpeg",
-    "stock": 2
+    "stock": 1
   },
   {
     "id": 3,
@@ -53,7 +53,7 @@
     "name": "Super Mario Odyssey",
     "price": 28,
     "img": "assets/img/mario-odyssey.jpg",
-    "stock": 2
+    "stock": "5"
   },
   {
     "id": 9,

@@ -539,50 +539,7 @@ const OrderItem = {
 
 const OrdersList = {
   template: `
-  <div class="overflow-x-auto rounded-lg border border-gray-200">
-  <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
-    <thead class="ltr:text-left rtl:text-right table-heading">
-      <tr>
-        <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-          Order ID
-        </th>
-        <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-          Expected Delivery Date
-        </th>
-        <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-          Delivery Address
-        </th>
-        <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-          Delivery Status
-        </th>
-        <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-          Products
-        </th>
-      </tr>
-    </thead>
-
-    <tbody class="divide-y divide-gray-200">
-      <tr v-for="order in orders" :key="order.orderID">
-        <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
-          {{ order.orderID }}
-        </td>
-        <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryDate }}</td>
-        <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryAddress }}</td>
-        <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.status }}</td>
-        <td colspan="4"> <!-- Utilisation de colspan pour fusionner les cellules sur toute la largeur -->
-          <div class="product-images">
-            <order-item v-for="product in order.products" :key="product.id" :productProp="product"/>
-          </div>
-        </div>
-
-
-      </div>
-      <div v-else>
-        <p>No orders found.</p>
-      </div>
-    </div>
-    -->
-
+  <div>
     <div class="overflow-x-auto rounded-lg border border-gray-200">
       <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
         <thead class="ltr:text-left rtl:text-right table-heading">
@@ -619,21 +576,19 @@ const OrdersList = {
                 <button id="deliveryStatus" v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
               </div>
             </td>
-
             <td colspan="4">
               <div class="product-images">
-                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product" />
               </div>
             </td>
-            
+          </tr>
+          <tr v-if="orders.length === 0">
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center" colspan="5">No orders found.</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-
-
-
+  </div>
   `,
   name: "OrdersList",
   components: {
@@ -698,7 +653,7 @@ const adminPage = {
         <label>Product ID: {{ product.id }}</label>
         <input type="text" v-model="product.name" />
         <input type="number" v-model="product.stock" />
-        <button :style="{ backgroundColor: product.stock < 2 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
+        <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
         <button @click="deleteProduct(product.id)">Delete</button>
       </div>
     </li>
