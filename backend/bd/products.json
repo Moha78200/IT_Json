@@ -2,35 +2,35 @@
   {
     "id": 1,
     "name": "Assassins Creed: Mirage",
-    "price": 12,
+    "price": 60,
     "img": "assets/img/assassins-creed-mirage.jpeg",
-    "stock": 0
+    "stock": 21
   },
   {
     "id": 2,
     "name": "Bloodborne",
     "price": 20,
     "img": "assets/img/bloodborne.jpeg",
-    "stock": 1
+    "stock": 11
   },
   {
     "id": 3,
     "name": "Call Of Duty: Modern Warfare 2",
-    "price": 5,
+    "price": 55,
     "img": "assets/img/cod-mw2.png",
-    "stock": 3
+    "stock": 6
   },
   {
     "id": 4,
     "name": "Elden Ring",
-    "price": 8,
+    "price": 10,
     "img": "assets/img/elden-ring.jpg",
-    "stock": 8
+    "stock": 7
   },
   {
     "id": 5,
     "name": "God Of War: Ragnarok",
-    "price": 3,
+    "price": 45,
     "img": "assets/img/God-Of-War-Ragnarok.jpg",
     "stock": 2
   },
@@ -44,7 +44,7 @@
   {
     "id": 7,
     "name": "Mario Kart 8 Deluxe",
-    "price": 25,
+    "price": 35,
     "img": "assets/img/mario-kart-8.jpeg",
     "stock": 7
   },
@@ -58,7 +58,7 @@
   {
     "id": 9,
     "name": "Pokemon Violet",
-    "price": 4,
+    "price": 17,
     "img": "assets/img/pokemon-violet.jpeg",
     "stock": 4
   },
@@ -81,6 +81,48 @@
     "name": "The Legend Of Zelda: Tears Of The Kingdom",
     "price": 6,
     "img": "assets/img/zelda-totk.jpeg",
-    "stock": 1
+    "stock": 0
+  },
+  {
+    "id": 13,
+    "name": "Lego Star War",
+    "price": 35,
+    "img": "assets/img/LegoStarWars.jpg",
+    "stock": 9
+  },
+  {
+    "id": 14,
+    "name": "Asphalt 9",
+    "price": 70,
+    "img": "assets/img/Asphalt9.jpg",
+    "stock": 3
+  },
+  {
+    "id": 15,
+    "name": "The Witcher 3",
+    "price": 87,
+    "img": "assets/img/TheWitcher.jpg",
+    "stock": 3
+  },
+  {
+    "id": 16,
+    "name": "XBOX ONE X",
+    "price": 450,
+    "img": "assets/img/XBOXoneX.png",
+    "stock": 12
+  },
+  {
+    "id": 17,
+    "name": "Nintendo SwitchOLED",
+    "price": 300,
+    "img": "assets/img/SwitchOLED.png",
+    "stock": 33
+  },
+  {
+    "id": 18,
+    "name": "PS5",
+    "price": 450,
+    "img": "assets/img/PS5.png",
+    "stock": 7
   }
 ]
