@@ -643,29 +643,29 @@ const WishList = {
 
 const adminPage = {
   template: `
-  <div>
-  <h1>Admin Page</h1>
+    <div>
+      <h1>Admin Page</h1>
 
-  <h2>Products</h2>
-  <ul>
-    <li v-for="product in products" :key="product.id">
-      <div>
-        <label>Product ID: {{ product.id }}</label>
-        <input type="text" v-model="product.name" />
-        <input type="number" v-model="product.stock" />
-        <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
-        <button @click="deleteProduct(product.id)">Delete</button>
-      </div>
-    </li>
-  </ul>
+      <h2>Products</h2>
+      <ul>
+        <li v-for="product in products" :key="product.id">
+          <div>
+            <label>Product ID: {{ product.id }}</label>
+            <input type="text" v-model="product.name" />
+            <input type="number" v-model="product.stock" />
+            <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
+            <button @click="deleteProduct(product.id)">Delete</button>
+          </div>
+        </li>
+      </ul>
 
-  <h2>Orders</h2>
-  <ul>
-    <li v-for="order in orders" :key="order.orderID">
-      Order ID: {{ order.orderID }}, User ID: {{ order.userID }}, Status: {{ order.status }}
-    </li>
-  </ul>
-</div>
+      <h2>Orders</h2>
+      <ul>
+        <li v-for="order in orders" :key="order.orderID">
+          Order ID: {{ order.orderID }}, User ID: {{ order.userID }}, Status: {{ order.status }}
+        </li>
+      </ul>
+    </div>
   `,
   name: "adminPage",
   data() {
@@ -724,8 +724,19 @@ const adminPage = {
   mounted() {
     this.fetchProducts();
     this.fetchOrders();
-  }
-}
+  },
+  beforeRouteEnter(to, from, next) {
+    // Check if the user is an admin 
+    const userType = JSON.parse(sessionStorage.getItem("loggedInUser")).type;
+
+    if (userType === 'admin') {
+      next();
+    } else {
+      next({ name: 'Home' }); // Redirect to the home page
+    }
+  },
+};
+
 
 
 
