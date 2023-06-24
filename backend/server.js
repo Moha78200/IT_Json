@@ -218,6 +218,74 @@ app.get('/products', (req, res) => {
   }
 });
 
+//Admin
+
+app.delete('/admin/products/:productID', (req, res) => {
+  try {
+    const { productID } = req.params;
+
+    // Read the existing products from the JSON file
+    let productsData = JSON.parse(fs.readFileSync('./bd/products.json', 'utf-8'));
+
+    // Find the index of the product to delete using productID
+    const productIndex = productsData.findIndex(product => product.id === parseInt(productID));
+    if (productIndex === -1) {
+      return res.status(404).json({ error: 'Product not found.' });
+    }
+
+    // Remove the product from the products array
+    productsData.splice(productIndex, 1);
+
+    // Write the updated products array back to the JSON file
+    fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
+
+    return res.status(200).json({ message: 'Product deleted successfully.' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    return res.status(500).json({ error: 'An error occurred while deleting the product.' });
+  }
+});
+
+app.get('/admin/orders', (req, res) => {
+  try {
+    // Read the existing orders from the JSON file
+    const ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
+
+    res.status(200).json(ordersData);
+  } catch (error) {
+    console.error('Error fetching orders:', error);
+    res.status(500).json({ error: 'An error occurred while fetching orders.' });
+  }
+});
+
+app.put('/admin/products/:productID', (req, res) => {
+  try {
+    const { productID } = req.params;
+    const { name, stock } = req.body;
+
+    // Read the existing products from the JSON file
+    const productsData = JSON.parse(fs.readFileSync('./bd/products.json', 'utf-8'));
+
+    // Find the index of the product to update using productID
+    const productToUpdate = productsData.findIndex(product => product.id === parseInt(productID));
+    if (productToUpdate === -1) {
+      return res.status(404).json({ error: 'Product not found.' });
+    }
+
+    // Update the selected product
+    productsData[productToUpdate].name = name;
+    productsData[productToUpdate].stock = stock;
+
+    // Write the updated productsData back to the JSON file
+    fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
+
+    return res.status(200).json({ message: 'Product updated successfully.' });
+  } catch (error) {
+    console.error('Error updating product:', error);
+    return res.status(500).json({ error: 'An error occurred while updating the product.' });
+  }
+});
+
 
 
 app.listen(port, () => {

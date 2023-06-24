@@ -11,70 +11,70 @@
     "name": "Bloodborne",
     "price": 20,
     "img": "assets/img/bloodborne.jpeg",
-    "stock": 5
+    "stock": 2
   },
   {
     "id": 3,
     "name": "Call Of Duty: Modern Warfare 2",
     "price": 5,
     "img": "assets/img/cod-mw2.png",
-    "stock": 4
+    "stock": 3
   },
   {
     "id": 4,
     "name": "Elden Ring",
     "price": 8,
     "img": "assets/img/elden-ring.jpg",
-    "stock": 9
+    "stock": 8
   },
   {
     "id": 5,
     "name": "God Of War: Ragnarok",
     "price": 3,
     "img": "assets/img/God-Of-War-Ragnarok.jpg",
-    "stock": 3
+    "stock": 2
   },
   {
     "id": 6,
     "name": "Lies Of P",
     "price": 65,
     "img": "assets/img/lies-of-p.jpeg",
-    "stock": 6
+    "stock": 5
   },
   {
     "id": 7,
     "name": "Mario Kart 8 Deluxe",
     "price": 25,
     "img": "assets/img/mario-kart-8.jpeg",
-    "stock": 9
+    "stock": 7
   },
   {
     "id": 8,
     "name": "Super Mario Odyssey",
     "price": 28,
     "img": "assets/img/mario-odyssey.jpg",
-    "stock": 4
+    "stock": 2
   },
   {
     "id": 9,
     "name": "Pokemon Violet",
     "price": 4,
     "img": "assets/img/pokemon-violet.jpeg",
-    "stock": 6
+    "stock": 4
   },
   {
     "id": 10,
     "name": "Sekiro: Shadows Die Twice",
     "price": 29,
     "img": "assets/img/sekiro.jpg",
-    "stock": 1
+    "stock": 2
   },
   {
     "id": 11,
     "name": "Spiderman",
     "price": 87,
     "img": "assets/img/spiderman.jpeg",
-    "stock": 0
+    "stock": 3
   },
   {
     "id": 12,
