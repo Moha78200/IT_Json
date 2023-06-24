@@ -468,12 +468,22 @@ const UserSettings = {
 
 const OrderItem = {
   template: `
-    <div class="order-item">
-      <img :src="product.image" :alt="product.name" />
-      <div>
-        <h3>{{ product.name }}</h3>
-        <p>Quantity: {{ product.quantity }}</p>
+    <div class="order-item home-container">
+
+    <div class="card-cart-container">
+    <div class="card-container">
+    <div class="card">
+      <div class="img-container">
+        <img :src="product.image" :alt="product.name" />
       </div>
+
+      <div class="card-text">
+        <h3>{{ product.name }}</h3>
+        <p class="stock">Quantity: {{ product.quantity }}</p>
+      </div>
+    </div>
+    </div>
+    </div>
     </div>
   `,
   props: {
