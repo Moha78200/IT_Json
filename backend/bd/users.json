@@ -48,5 +48,15 @@
     "password": "123test",
     "billingAddress": "testing center",
     "type": "user"
+  },
+  {
+    "userID": 6,
+    "firstName": "théo",
+    "lastName": "villano",
+    "phoneNumber": "063648635X",
+    "email": "theo.villano@efrei.net",
+    "password": "théo2",
+    "billingAddress": "21 rue de bale",
+    "type": "user"
   }
 ]

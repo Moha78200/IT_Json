@@ -1,11 +1,11 @@
 const Login = {
   template: `
-  <div>
+  <section>
 
 <!--------------------------------------------------------------------------------------------------------->
     <div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
     <br> <br>
-      <button v-if="isLoggedIn" @click="logout" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white">
+      <button v-if="isLoggedIn" @click="logout" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white hover:bg-blue-600">
         Logout
       </button>
     </div>
@@ -48,7 +48,7 @@ const Login = {
               </div>
 
               <div class="flex items-center justify-center">
-                  <button type="submit" class="rounded-lg bg-blue-500 px-20 py-3 text-sm font-medium text-white">
+                  <button type="submit" class="rounded-lg bg-blue-500 px-20 py-3 text-sm font-medium text-white hover:bg-blue-600">
                     Sing in
                   </button>
                 </div>
@@ -110,7 +110,7 @@ const Login = {
                 </div>
 
                 <div class="flex items-center justify-center">
-                  <button type="submit" class="rounded-lg bg-blue-500 px-20 py-3 text-sm font-medium text-white">
+                  <button type="submit" class="rounded-lg bg-blue-500 px-20 py-3 text-sm font-medium text-white hover:bg-blue-600">
                     Create Account
                   </button>
                 </div>
@@ -122,7 +122,8 @@ const Login = {
     </section>
 
     
-  </div>
+  </section>
+
   `,
   data() {
     return {
@@ -351,7 +352,8 @@ const Home = {
 
 const UserSettings = {
   template: `
-    <div>
+  <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+    <div class="user-settings">
       <h1>User Settings</h1>
       <div v-if="isLoggedIn">
         <label for="firstName">First Name:</label>
@@ -377,6 +379,8 @@ const UserSettings = {
         <p>Please log in to view and modify your user settings.</p>
       </div>
     </div>
+  </div>
+
   `,
   name: "UserSettings",
   data() {
