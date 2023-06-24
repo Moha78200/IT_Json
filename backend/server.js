@@ -11,8 +11,6 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
-
-
 app.post('/register', (req, res) => {
   try {
     const { firstName, lastName, phoneNumber, email, password, billingAddress } = req.body;
@@ -91,6 +89,33 @@ app.post('/editUser', (req, res) => {
   }
 });
 
+app.put('/orders/:orderID', (req, res) => {
+  try {
+    const { orderID } = req.params;
+    const { status } = req.body;
+
+    // Read the existing orders from the JSON file
+    const ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
+
+    // Find the index of the order to update using orderID
+    const orderToUpdate = ordersData.findIndex(order => order.orderID === parseInt(orderID));
+    if (orderToUpdate === -1) {
+      return res.status(404).json({ error: 'Order not found.' });
+    }
+
+    // Update the status of the selected order
+    ordersData[orderToUpdate].status = status;
+
+    // Write the updated ordersData back to the JSON file
+    fs.writeFileSync('./bd/orders.json', JSON.stringify(ordersData, null, 2));
+
+    return res.status(200).json({ message: 'Order status updated successfully.' });
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    return res.status(500).json({ error: 'An error occurred while updating the order status.' });
+  }
+});
+
 app.get('/orders', (req, res) => {
   try {
     const { userID } = req.query;
@@ -129,7 +154,6 @@ app.get('/products', (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching product information.' });
   }
 });
-
 
 
 app.listen(port, () => {

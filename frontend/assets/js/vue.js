@@ -441,40 +441,14 @@ const UserSettings = {
 
 const OrderItem = {
   template: `
-    <div class="order-item">
-      <img :src="product.image" :alt="product.name" />
-      <div>
-        <h3>{{ product.name }}</h3>
-        <p>Quantity: {{ product.quantity }}</p>
-      </div>
-      
-
-      <br><br><br><br>
-      <div class="order-item">
-      <!-- cards display -->
-        <div class="card-cart-container">
-          <div class="card-container">
-            <div class="card">
-
-              <div class="img-container">
-                <img :src='product.image' />
-              </div>
-
-              <div class="card-text">
-                <h3>{{ product.name }}</h3>
-              </div>
-
-              <div class="card-icons">
-
-                <div class="add-to-cart">
-                  <span class="stock">Quantity: {{ product.quantity }}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <div class="order-item">
+  <img :src="product.image" :alt="product.name" />
+  <div>
+    <h3>{{ product.name }}</h3>
+    <p>Quantity: {{ product.quantity }}</p>
+    <button v-if="isPendingDelivery" @click="markAsDelivered">Mark as Delivered</button>
+  </div>
+</div>
   `,
   props: {
     productProp: {
@@ -508,9 +482,28 @@ const OrderItem = {
         name: this.productData ? this.productData.name : "",
         image: this.productData ? this.productData.img : ""
       };
+    },
+    isPendingDelivery() {
+      return this.productProp.status === 'Pending Delivery';
+    }
+  },
+  methods: {
+    markAsDelivered() {
+      // Make a PUT request to update the order status as "Delivered"
+      axios.put(`http://localhost:3000/orders/${this.productProp.orderID}`, {
+        status: 'Delivered'
+      })
+      .then(response => {
+        // Update the order status locally
+        this.productProp.status = 'Delivered';
+      })
+      .catch(error => {
+        console.error('Error updating order status', error);
+      });
     }
   }
 };
+
 
 
 const OrdersList = {
@@ -524,6 +517,7 @@ const OrdersList = {
           <p>Delivery Address: {{ order.deliveryAddress }}</p>
           <h3>Products:</h3>
           <order-item v-for="product in order.products" :key="product.id" :productProp="product" />
+          <p>Delivery Status : {{order.status}} </p>
         </div>
       </div>
       <div v-else>
