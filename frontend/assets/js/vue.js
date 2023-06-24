@@ -764,6 +764,72 @@ const adminPage = {
   },
 };
 
+const addProduct = {
+  template: `
+    <div>
+      <h1>Add Product</h1>
+      <form @submit.prevent="saveProduct">
+        <label for="name">Name:</label>
+        <input type="text" id="name" v-model="product.name" required>
+        
+        <label for="price">Price:</label>
+        <input type="number" id="price" v-model="product.price" required>
+        
+        <label for="stock">Stock:</label>
+        <input type="number" id="stock" v-model="product.stock" required>
+        
+        <label for="img">Image:</label>
+        <input type="file" id="img" @change="handleImageUpload" required>
+        
+        <button type="submit">Save Product</button>
+      </form>
+    </div>
+  `,
+  name: "addProduct",
+  data() {
+    return {
+      product: {
+        name: "",
+        price: 0,
+        stock: 0,
+        img: null,
+      },
+    };
+  },
+  methods: {
+    saveProduct() {
+      // Prepare the form data to be sent
+      const formData = new FormData();
+      formData.append("name", this.product.name);
+      formData.append("price", this.product.price);
+      formData.append("stock", this.product.stock);
+      formData.append("img", this.product.img);
+
+      // Make a POST request to save the product
+      axios
+        .post("http://localhost:3000/addProduct", formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        })
+        .then((response) => {
+          console.log(response.data.message);
+          // Reset the form fields after saving the product
+          this.product.name = "";
+          this.product.price = 0;
+          this.product.stock = 0;
+          this.product.img = null;
+        })
+        .catch((error) => {
+          console.error("Error saving product:", error);
+        });
+    },
+    handleImageUpload(event) {
+      const file = event.target.files[0];
+      this.product.img = file;
+    },
+  },
+};
 
 
 
@@ -777,6 +843,7 @@ const router = new VueRouter({
     { path: "/orders-list", component: OrdersList, name: "OrdersList" },
     { path: "/login", component: Login, name: "Login" }, 
     { path: "/admin-page", component: adminPage, name: "adminPage" },
+    { path: "/add-product", component: addProduct, name: "addProduct" },
   ],
 });
 

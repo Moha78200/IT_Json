@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const fs = require('fs');
 const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
 
 const app = express();
 const port = 3000;
@@ -286,6 +288,68 @@ app.put('/admin/products/:productID', (req, res) => {
   }
 });
 
+// Add products
+
+// Set up multer storage for file uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, '../frontend/assets/img'); // Change the destination folder as per your requirement
+  },
+  filename: function (req, file, cb) {
+    const name = req.body.name; // Assuming the name of the game is provided in the request body
+    const extension = 'jpeg';
+    const imageName = `${name}.${extension}`;
+    cb(null, imageName);
+  },
+});
+
+const upload = multer({ storage: storage });
+
+// Middleware to serve static files
+app.use(express.static('public'));
+
+// Parse JSON request body
+app.use(express.json());
+
+// Define your existing routes here
+
+// Route to handle the addition of a new product
+app.post('/addProduct', upload.single('img'), (req, res) => {
+  // Process the product data and save it to the database
+  const { name, price, stock } = req.body;
+  const image = req.file;
+
+  // Read the existing products from the JSON file
+  let productsData = JSON.parse(fs.readFileSync('./bd/products.json', 'utf-8'));
+
+  // Check if any product already has the same id
+  const checkID = productsData.find(prod => prod.id === prod.length + 1);
+  if (checkID) {
+    // If a product with the same id exists, generate a new unique id
+    const actualID = Math.max(...productsData.map(prod => prod.id));
+    finalID = actualID + 1;
+  } else {
+    // If no user with the same userID exists, use the current count + 1 as the new userID
+    finalID = productsData.length + 1;
+  }
+
+  // Save the product to the database
+
+      // Create a new product object
+      const newProduct = {
+        id: finalID,
+        name: name,
+        price: price,
+        stock: stock,
+        img: ("assets/img/"+image.filename),
+      };
+
+      // Add the new product to the existing products array
+      productsData.push(newProduct);
+
+      // Write the updated products array back to the JSON file
+      fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
+});
 
 
 app.listen(port, () => {
