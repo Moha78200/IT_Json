@@ -18,6 +18,9 @@ app.post('/orders', (req, res) => {
     // Read the existing orders from the JSON file
     let ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
 
+    // Read the existing products from the JSON file
+    let productsData = JSON.parse(fs.readFileSync('./bd/products.json', 'utf-8'));
+
     // Generate a new order ID
     // Check if any order already has the same orderID
     let newOrderID = ordersData.find(order => order.orderID === ordersData.length + 1);
@@ -40,11 +43,23 @@ app.post('/orders', (req, res) => {
       status: 'Pending Delivery' // Set the initial status as 'Pending Delivery'
     };
 
+    // Update the stock in the products data based on the ordered quantities
+    productsData.forEach(product => {
+      const orderedProduct = products.find(p => p.id === product.id);
+      if (orderedProduct) {
+        product.stock -= orderedProduct.quantity;
+      }
+    });
+
     // Add the new order to the orders array
     ordersData.push(newOrder);
 
     // Write the updated orders array back to the JSON file
     fs.writeFileSync('./bd/orders.json', JSON.stringify(ordersData, null, 2));
+
+    // Write the updated products data back to the JSON file
+    fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
+
 
     res.status(200).json({ message: 'Order created successfully.', orderID: newOrderID });
   } catch (error) {
