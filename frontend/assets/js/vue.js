@@ -2,7 +2,7 @@ const Login = {
   template: `
   <section>
 
-<!--------------------------------------------------------------------------------------------------------->
+  <!--------------------------------------------------------------------------------------------------------->
     <div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
     <br> <br>
       <button v-if="isLoggedIn" @click="logout" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white hover:bg-blue-600">
@@ -445,14 +445,13 @@ const UserSettings = {
 
 const OrderItem = {
   template: `
-  <div class="order-item">
-  <img :src="product.image" :alt="product.name" />
-  <div>
-    <h3>{{ product.name }}</h3>
-    <p>Quantity: {{ product.quantity }}</p>
-    <button v-if="isPendingDelivery" @click="markAsDelivered">Mark as Delivered</button>
-  </div>
-</div>
+    <div class="order-item">
+      <img :src="product.image" :alt="product.name" />
+      <div>
+        <h3>{{ product.name }}</h3>
+        <p>Quantity: {{ product.quantity }}</p>
+      </div>
+    </div>
   `,
   props: {
     productProp: {
@@ -467,17 +466,18 @@ const OrderItem = {
   },
   mounted() {
     // Make a GET request to fetch the product information
-    axios.get("http://localhost:3000/products", {
-      params: {
-        productID: this.productProp.id
-      }
-    })
-    .then(response => {
-      this.productData = response.data;
-    })
-    .catch(error => {
-      console.error("Error fetching product information", error);
-    });
+    axios
+      .get("http://localhost:3000/products", {
+        params: {
+          productID: this.productProp.id
+        }
+      })
+      .then(response => {
+        this.productData = response.data;
+      })
+      .catch(error => {
+        console.error("Error fetching product information", error);
+      });
   },
   computed: {
     product() {
@@ -486,24 +486,6 @@ const OrderItem = {
         name: this.productData ? this.productData.name : "",
         image: this.productData ? this.productData.img : ""
       };
-    },
-    isPendingDelivery() {
-      return this.productProp.status === 'Pending Delivery';
-    }
-  },
-  methods: {
-    markAsDelivered() {
-      // Make a PUT request to update the order status as "Delivered"
-      axios.put(`http://localhost:3000/orders/${this.productProp.orderID}`, {
-        status: 'Delivered'
-      })
-      .then(response => {
-        // Update the order status locally
-        this.productProp.status = 'Delivered';
-      })
-      .catch(error => {
-        console.error('Error updating order status', error);
-      });
     }
   }
 };
@@ -517,11 +499,16 @@ const OrdersList = {
       <div v-if="orders.length > 0">
         <div v-for="order in orders" :key="order.orderID">
           <h2>Order ID: {{ order.orderID }}</h2>
-          <p>Delivery Date: {{ order.deliveryDate }}</p>
+          <p>Expected Delivery Date: {{ order.deliveryDate }}</p>
           <p>Delivery Address: {{ order.deliveryAddress }}</p>
           <h3>Products:</h3>
-          <order-item v-for="product in order.products" :key="product.id" :productProp="product" />
-          <p>Delivery Status : {{order.status}} </p>
+          <order-item
+            v-for="product in order.products"
+            :key="product.id"
+            :productProp="product"
+          />
+          <p>Delivery Status: {{ order.status }}</p>
+          <button v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
         </div>
       </div>
       <div v-else>
@@ -540,17 +527,36 @@ const OrdersList = {
   },
   mounted() {
     // Make a GET request to fetch the user's orders
-    axios.get("http://localhost:3000/orders", {
-      params: {
-        userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID// provide the userID of the logged-in user
+    axios
+      .get("http://localhost:3000/orders", {
+        params: {
+          userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID // provide the userID of the logged-in user
+        }
+      })
+      .then(response => {
+        this.orders = response.data;
+      })
+      .catch(error => {
+        console.error("Error fetching user orders", error);
+      });
+  },
+  methods: {
+    markOrderDelivered(order) {
+      if (order.status === "Pending Delivery") {
+        const newStatus = "Delivered";
+        axios
+          .put(`http://localhost:3000/orders/${order.orderID}`, {
+            status: newStatus
+          })
+          .then(response => {
+            order.status = newStatus;
+            console.log("Order marked as delivered successfully.");
+          })
+          .catch(error => {
+            console.error("Error marking order as delivered", error);
+          });
       }
-    })
-    .then(response => {
-      this.orders = response.data;
-    })
-    .catch(error => {
-      console.error("Error fetching user orders", error);
-    });
+    }
   }
 };
 

@@ -11,6 +11,8 @@ app.use(cors());
 
 app.use(bodyParser.json());
 
+
+
 app.post('/register', (req, res) => {
   try {
     const { firstName, lastName, phoneNumber, email, password, billingAddress } = req.body;
@@ -103,7 +105,7 @@ app.put('/orders/:orderID', (req, res) => {
       return res.status(404).json({ error: 'Order not found.' });
     }
 
-    // Update the status of the selected order
+    // Update the status of the order
     ordersData[orderToUpdate].status = status;
 
     // Write the updated ordersData back to the JSON file
@@ -116,22 +118,28 @@ app.put('/orders/:orderID', (req, res) => {
   }
 });
 
-app.get('/orders', (req, res) => {
-  try {
-    const { userID } = req.query;
 
-    // Read the existing orders from the JSON file
-    const ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
+app.route('/orders')
+  .get((req, res) => {
+    try {
+      const { userID } = req.query;
 
-    // Filter orders based on the user ID
-    const userOrders = ordersData.filter(order => order.userID === parseInt(userID));
+      // Read the existing orders from the JSON file
+      const ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
 
-    res.status(200).json(userOrders);
-  } catch (error) {
-    console.error('Error fetching user orders:', error);
-    res.status(500).json({ error: 'An error occurred while fetching user orders.' });
-  }
-});
+      // Filter orders based on the user ID
+      const userOrders = ordersData.filter(order => order.userID === parseInt(userID));
+
+      res.status(200).json(userOrders);
+    } catch (error) {
+      console.error('Error fetching user orders:', error);
+      res.status(500).json({ error: 'An error occurred while fetching user orders.' });
+    }
+  })
+  .put((req, res) => {
+    // Handle the PUT request separately as defined in the new route above
+  });
+
 
 
 app.get('/products', (req, res) => {
@@ -154,6 +162,7 @@ app.get('/products', (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching product information.' });
   }
 });
+
 
 
 app.listen(port, () => {
