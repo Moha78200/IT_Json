@@ -397,6 +397,7 @@ const UserSettings = {
         <label for="password">Password:</label>
         <input type="password" id="password" v-model="password">
         <button @click="saveChanges">Save Changes</button>
+        <button v-if="isAdmin" @click="redirectToAdminPage">Admin Page</button>
       </div>
       <div v-else>
         <p>Please log in to view and modify your user settings.</p>
@@ -419,7 +420,16 @@ const UserSettings = {
       password: ""
     };
   },
+  computed: {
+    isAdmin() {
+      return this.user.type === 'admin'; 
+    }
+  },
   methods: {
+    redirectToAdminPage() {
+
+      this.$router.push('/admin-page'); 
+    },
     saveChanges() {
       // Perform validation and save changes to the database using axios or your preferred method
       if (this.password === this.user.password) {
@@ -471,20 +481,20 @@ const OrderItem = {
   
     <div class="order-item home-container">
 
-    <div class="card-cart-container">
-    <div class="card-container">
-    <div class="card">
-      <div class="img-container">
-        <img :src="product.image" :alt="product.name" />
-      </div>
+      <div class="card-cart-container">
+        <div class="card-container">
+          <div class="card">
+            <div class="img-container">
+              <img :src="product.image" :alt="product.name" />
+            </div>
 
-      <div class="card-text">
-        <h3>{{ product.name }}</h3>
-        <p class="stock">Quantity: {{ product.quantity }}</p>
+            <div class="card-text">
+              <h3>{{ product.name }}</h3>
+              <p class="stock">Quantity: {{ product.quantity }}</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-    </div>
-    </div>
     </div>
 
   `,
@@ -529,6 +539,33 @@ const OrderItem = {
 
 const OrdersList = {
   template: `
+  <!--
+    <div class="Container">
+      <h1>List of orders</h1>
+      <div v-if="orders.length > 0">
+        <div v-for="order in orders" :key="order.orderID" class="order-info">
+          <div class="left">
+            <h2>Order ID: {{ order.orderID }}</h2>
+              <p>Expected Delivery Date: {{ order.deliveryDate }}</p>
+              <p>Delivery Address: {{ order.deliveryAddress }}</p>
+              <p>Delivery Status: {{ order.status }}</p>
+              <button v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
+            </div>
+            <div class="right">
+              <h3>Products:</h3>
+              <div class="product-images">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+              </div>
+          </div>
+        </div>
+
+
+      </div>
+      <div v-else>
+        <p>No orders found.</p>
+      </div>
+    </div>
+    -->
 
     <div class="overflow-x-auto rounded-lg border border-gray-200">
       <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
@@ -566,21 +603,19 @@ const OrdersList = {
                 <button id="deliveryStatus" v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
               </div>
             </td>
-
             <td colspan="4">
               <div class="product-images">
-                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
+                <order-item v-for="product in order.products" :key="product.id" :productProp="product" />
               </div>
             </td>
-            
+          </tr>
+          <tr v-if="orders.length === 0">
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center" colspan="5">No orders found.</td>
           </tr>
         </tbody>
       </table>
     </div>
-
-
-
-
+  </div>
   `,
   name: "OrdersList",
   components: {
@@ -633,6 +668,94 @@ const WishList = {
   name: "WishList",
 };
 
+const adminPage = {
+  template: `
+  <div>
+  <h1>Admin Page</h1>
+
+  <h2>Products</h2>
+  <ul>
+    <li v-for="product in products" :key="product.id">
+      <div>
+        <label>Product ID: {{ product.id }}</label>
+        <input type="text" v-model="product.name" />
+        <input type="number" v-model="product.stock" />
+        <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
+        <button @click="deleteProduct(product.id)">Delete</button>
+      </div>
+    </li>
+  </ul>
+
+  <h2>Orders</h2>
+  <ul>
+    <li v-for="order in orders" :key="order.orderID">
+      Order ID: {{ order.orderID }}, User ID: {{ order.userID }}, Status: {{ order.status }}
+    </li>
+  </ul>
+</div>
+  `,
+  name: "adminPage",
+  data() {
+    return {
+      products: [],
+      orders: [],
+    };
+  },
+  methods: {
+    fetchProducts() {
+      fetch("../backend/bd/products.json")
+        .then((response) => response.json())
+        .then((data) => {
+          this.products = data;
+        })
+        .catch((error) => {
+          console.error("Error fetching products:", error);
+        });
+    },
+    deleteProduct(productID) {
+      axios
+        .delete(`http://localhost:3000/admin/products/${productID}`)
+        .then(response => {
+          console.log(response.data.message);
+          // Refresh the products list after deleting the product
+          this.fetchProducts();
+        })
+        .catch(error => {
+          console.error('Error deleting product:', error);
+        });
+    },
+    fetchOrders() {
+      fetch("../backend/bd/orders.json")
+        .then((response) => response.json())
+        .then((data) => {
+          this.orders = data;
+        })
+        .catch((error) => {
+          console.error("Error fetching orders:", error);
+        });
+    },
+    updateProduct(product) {
+      axios
+        .put(`http://localhost:3000/admin/products/${product.id}`, {
+          name: product.name,
+          stock: product.stock
+        })
+        .then(response => {
+          console.log(response.data.message);
+        })
+        .catch(error => {
+          console.error('Error updating product:', error);
+        });
+    }
+  },
+  mounted() {
+    this.fetchProducts();
+    this.fetchOrders();
+  }
+}
+
+
+
 
 // router
 const router = new VueRouter({
@@ -641,7 +764,8 @@ const router = new VueRouter({
     { path: "/user-settings", component: UserSettings, name: "UserSettings" },
     { path: "/wish-list", component: WishList, name: "WishList" },
     { path: "/orders-list", component: OrdersList, name: "OrdersList" },
-    { path: "/login", component: Login, name: "Login" }, // Add this line
+    { path: "/login", component: Login, name: "Login" }, 
+    { path: "/admin-page", component: adminPage, name: "adminPage" },
   ],
 });
 
