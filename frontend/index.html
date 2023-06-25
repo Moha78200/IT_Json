@@ -157,6 +157,11 @@
                 <h6>Total articles : {{ itemTotalAmount }}</h6>
               </div>
 
+              <div class="expedited-delivery">
+                <label for="expedited-delivery-checkbox">Expedited Delivery</label>
+                <input type="checkbox" id="expedited-delivery-checkbox" v-model="expeditedDelivery" />
+              </div>
+
               <div class="shipping-address">
                 <label for="shipping-address-checkbox">Provide a different shipping address</label>
                 <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
@@ -165,7 +170,7 @@
                   <input type="text" id="shipping-address-input" v-model="shippingAddress" />
                 </div>
               </div>
-              
+
               <div class="order-button">
                 <button @click="createOrder">Commander</button>
               </div>

@@ -246,6 +246,7 @@ const Home = {
       cart: [],
       useDifferentShippingAddress: false,
       shippingAddress: '',
+      expeditedDelivery: false,
     };
   },
   computed: {
@@ -274,11 +275,15 @@ const Home = {
   methods: {
     createOrder() {
       // Create an order object with the necessary information
+      const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+      const deliveryTime = this.expeditedDelivery ? 2 : 5;
+      const deliveryDate = new Date(Date.now() + deliveryTime * 24 * 60 * 60 * 1000);
+      const formattedDeliveryDate = deliveryDate.toISOString().slice(0, 10);
       const order = {
-        userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID, 
+        userID: loggedInUser.userID,
         products: this.cart,
-        deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // Set delivery date to 5 days from now
-        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress,
+        deliveryDate: formattedDeliveryDate,
+        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : loggedInUser.billingAddress,
       };
   
       // Make a POST request to save the order into the database
@@ -727,6 +732,10 @@ const WishList = {
               </div>
               <h6>Total articles : {{ itemTotalAmount }}</h6>
             </div>
+            <div class="expedited-delivery">
+                <label for="expedited-delivery-checkbox">Expedited Delivery</label>
+                <input type="checkbox" id="expedited-delivery-checkbox" v-model="expeditedDelivery" />
+              </div>
             <div class="shipping-address">
               <label for="shipping-address-checkbox">Provide a different shipping address</label>
               <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
@@ -751,6 +760,7 @@ const WishList = {
       cart: [],
       useDifferentShippingAddress: false,
       shippingAddress: '',
+      expeditedDelivery: false,
     };
   },
   created() {
@@ -847,11 +857,15 @@ const WishList = {
     },
     createOrder() {
       // Create an order object with the necessary information
+      const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+      const deliveryTime = this.expeditedDelivery ? 2 : 5;
+      const deliveryDate = new Date(Date.now() + deliveryTime * 24 * 60 * 60 * 1000);
+      const formattedDeliveryDate = deliveryDate.toISOString().slice(0, 10);
       const order = {
-        userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID,
+        userID: loggedInUser.userID,
         products: this.cart,
-        deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // Set delivery date to 5 days from now
-        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress,
+        deliveryDate: formattedDeliveryDate,
+        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : loggedInUser.billingAddress,
       };
 
       // Make a POST request to save the order into the database
