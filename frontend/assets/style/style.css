@@ -492,6 +492,9 @@ nav .nav-container #icons i:hover {
     margin-top: 20px;
   }
 
+    /*--------------------------Orders-----------------------------*/
+
+
   .table-heading {
     border-bottom: 2px solid black;
     border-top: 2px solid black;
@@ -536,3 +539,6 @@ nav .nav-container #icons i:hover {
       height: auto;
       margin-right: 5px; / Ajoute un espace entre les images */
     }
+
+  /*--------------------------ADMIN-----------------------------*/
+

@@ -537,36 +537,10 @@ const OrderItem = {
 
 const OrdersList = {
   template: `
-  <!--
-    <div class="Container">
-      <h1>List of orders</h1>
-      <div v-if="orders.length > 0">
-        <div v-for="order in orders" :key="order.orderID" class="order-info">
-          <div class="left">
-            <h2>Order ID: {{ order.orderID }}</h2>
-              <p>Expected Delivery Date: {{ order.deliveryDate }}</p>
-              <p>Delivery Address: {{ order.deliveryAddress }}</p>
-              <p>Delivery Status: {{ order.status }}</p>
-              <button v-if="order.status === 'Pending Delivery'" @click="markOrderDelivered(order)">Mark Delivered</button>
-            </div>
-            <div class="right">
-              <h3>Products:</h3>
-              <div class="product-images">
-                <order-item v-for="product in order.products" :key="product.id" :productProp="product">
-              </div>
-          </div>
-        </div>
 
-
-      </div>
-      <div v-else>
-        <p>No orders found.</p>
-      </div>
-    </div>
-    -->
 
     <div class="overflow-x-auto rounded-lg border border-gray-200">
-      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-32">
+      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm mt-16">
         <thead class="ltr:text-left rtl:text-right table-heading">
           <tr>
             <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
@@ -919,8 +893,9 @@ const adminPage = {
             <label>Product ID: {{ product.id }}</label>
             <input type="text" v-model="product.name" />
             <input type="number" v-model="product.stock" />
-            <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
-            <button @click="deleteProduct(product.id)">Delete</button>
+            <button style="background-color: {{ product.stock < 3 ? 'red' : 'blue' }}; color: white; font-weight: bold; padding: 8px 12px; border-radius: 4px;" @click="updateProduct(product)">Update</button>
+            <button style="background-color: red; color: white; font-weight: bold; padding: 8px 12px; border-radius: 4px;" @click="deleteProduct(product.id)">Delete</button>
+
           </div>
         </li>
       </ul>
@@ -933,61 +908,72 @@ const adminPage = {
       </ul>
     </div>
     -->
-
-    <div>
-      <h1>Admin Page</h1>
-
-      <router-link to="/add-product">
-        <button>Add Product</button>
-      </router-link>
-
-      <div class="flex">
-        <div class="w-1/2 pr-4">
-          <h2>Products</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>ID Product</th>
-                <th>Name</th>
-                <th>Stock</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="product in products" :key="product.id">
-                <td>{{ product.id }}</td>
-                <td><input type="text" v-model="product.name" /></td>
-                <td><input type="number" v-model="product.stock" /></td>
-                <td>
-                  <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
-                  <button @click="deleteProduct(product.id)">Delete</button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+    
+    <div class="flex space-x-4 md:flex-row">
+      <div class="md:w-1/2 flex-1 mt-16">
+        <!-- Partie Produit -->
+        <div class="flex items-center justify-center mb-4">
+          <h2 class="text-2xl font-bold mr-2">Produits</h2>
+          <router-link to="/add-product">
+            <button>
+              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
+                <!-- Votre code SVG ici -->
+                <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM200 344V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
+              </svg>
+            </button>
+          </router-link>
         </div>
-
-        <div class="w-1/2 pl-4">
-          <h2>Orders</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>ID Order</th>
-                <th>ID User</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="order in orders" :key="order.orderID">
-                <td>{{ order.orderID }}</td>
-                <td>{{ order.userID }}</td>
-                <td>{{ order.status }}</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <table class="w-full mb-8">
+          <thead>
+            <tr>
+              <th class="border border-black px-4 py-2 text-center">ID Product</th>
+              <th class="border border-black px-4 py-2 text-center">Name</th>
+              <th class="border border-black px-4 py-2 text-center">Stock</th>
+              <th class="border border-black px-4 py-2 text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="product in products" :key="product.id">
+              <td class="border-b border-l px-4 py-2 text-center">{{ product.id }}</td>
+              <td class="border-b px-4 py-2 text-center">{{ product.name }}</td>
+              <td class="border-b px-4 py-2 text-center">{{ product.stock }}</td>
+              <td class="border-b px-4 py-2 text-center">
+                <button :class="{
+                  'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded': true,
+                  'bg-orange-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded': product.stock < 3
+                }" @click="updateProduct(product)">Update</button>
+                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="md:w-1/2 flex-1 mt-16">
+        <!-- Partie Order -->
+        <h2 class="text-2xl font-bold mb-4 text-center">Orders</h2>
+        <table class="w-full">
+          <thead>
+            <tr>
+              <th class="border border-black px-4 py-2 text-center">ID Order</th>
+              <th class="border border-black px-4 py-2 text-center">ID User</th>
+              <th class="border border-black px-4 py-2 text-center">Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="order in orders" :key="order.orderID">
+              <td class="border-l border-b px-4 py-2 text-center">{{ order.orderID }}</td>
+              <td class="border-b px-4 py-2 text-center">{{ order.userID }}</td>
+              <td class="border-r border-b px-4 py-2 text-center">{{ order.status }}</td>
+            </tr>
+          </tbody>
+        </table>
       </div>
     </div>
+
+
+
+
+
 
 
 
