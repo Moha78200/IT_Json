@@ -244,6 +244,8 @@ const Home = {
       searchKey: "",
       liked: [],
       cart: [],
+      useDifferentShippingAddress: false,
+      shippingAddress: '',
     };
   },
   computed: {
@@ -276,7 +278,7 @@ const Home = {
         userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID, 
         products: this.cart,
         deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // Set delivery date to 5 days from now
-        deliveryAddress: JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress, 
+        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress,
       };
   
       // Make a POST request to save the order into the database
@@ -296,6 +298,7 @@ const Home = {
       const likedCookie = this.$cookies.get("like");
       if (likedCookie) {
         this.liked = likedCookie;
+        console.log("liked: ", this.liked)
       }
     },
   
@@ -318,6 +321,7 @@ const Home = {
           this.$cookies.set("like", JSON.stringify(this.liked));
         }, 300);
       });
+      console.log(this.$cookies.get("like"))
     },
     addToCart(product) {
       if (product.stock > 0) {
@@ -660,7 +664,7 @@ const WishList = {
             <div class="like-container">
               <input
                 type="checkbox"
-                :value="product.id"
+                :value="product"
                 name="checkbox"
                 v-bind:id="product.id"
                 v-model="liked"
@@ -723,6 +727,14 @@ const WishList = {
               </div>
               <h6>Total articles : {{ itemTotalAmount }}</h6>
             </div>
+            <div class="shipping-address">
+              <label for="shipping-address-checkbox">Provide a different shipping address</label>
+              <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
+              <div v-if="useDifferentShippingAddress" class="input-container">
+                <label for="shipping-address-input">Shipping Address:</label>
+                <input type="text" id="shipping-address-input" v-model="shippingAddress" />
+              </div>
+            </div>
             <div class="order-button">
               <button @click="createOrder">Commander</button>
             </div>
@@ -736,29 +748,13 @@ const WishList = {
   data() {
     return {
       liked: [],
-      cart: []
+      cart: [],
+      useDifferentShippingAddress: false,
+      shippingAddress: '',
     };
   },
   created() {
-    const likedCookie = this.$cookies.get("like");
-    console.log("likedCookie:", likedCookie, "And parse : ", JSON.parse(likedCookie));
-    if (likedCookie) {
-      try {
-        const likedProductIds = JSON.parse(likedCookie);
-        // Make an API request to fetch product details based on the product ids
-        axios.get(`http://localhost:3000/wished`, { params: { ids: likedProductIds } })
-          .then(response => {
-            this.liked = response.data;
-          })
-          .catch(error => {
-            console.error("Error fetching product details:", error);
-            this.liked = [];
-          });
-      } catch (error) {
-        console.error("Error parsing liked cookie:", error);
-        this.liked = [];
-      }
-    }
+    this.liked = this.$cookies.get("like");
   },
   computed: {
     cartTotalAmount() {
@@ -797,7 +793,12 @@ const WishList = {
       return product.stock > 0;
     },
     setLikeCookie() {
-      this.$cookies.set("like", JSON.stringify(this.liked));
+      document.addEventListener("input", () => {
+        setTimeout(() => {
+          this.$cookies.set("like", JSON.stringify(this.liked));
+        }, 300);
+      });
+      console.log(this.$cookies.get("like"))
     },
     addToCart(product) {
       if (product.stock > 0) {
@@ -850,7 +851,7 @@ const WishList = {
         userID: JSON.parse(sessionStorage.getItem("loggedInUser")).userID,
         products: this.cart,
         deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000), // Set delivery date to 5 days from now
-        deliveryAddress: JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress,
+        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : JSON.parse(sessionStorage.getItem("loggedInUser")).billingAddress,
       };
 
       // Make a POST request to save the order into the database
