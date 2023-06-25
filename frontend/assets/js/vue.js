@@ -875,8 +875,6 @@ const WishList = {
 
 
 
-
-
 const adminPage = {
   template: `
   <!--
@@ -916,12 +914,7 @@ const adminPage = {
         <div class="flex items-center justify-center mb-4">
           <h2 class="text-2xl font-bold mr-2">Produits</h2>
           <router-link to="/add-product">
-            <button>
-              <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-                <!-- Votre code SVG ici -->
-                <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM200 344V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
-              </svg>
-            </button>
+            <button class="h-8 bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">  ADD    </button>
           </router-link>
         </div>
         <table class="w-full mb-8">
