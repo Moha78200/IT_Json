@@ -266,7 +266,7 @@ app.get('/admin/orders', (req, res) => {
 app.put('/admin/products/:productID', (req, res) => {
   try {
     const { productID } = req.params;
-    const { name, stock } = req.body;
+    const { name, price, stock } = req.body;
 
     // Read the existing products from the JSON file
     const productsData = JSON.parse(fs.readFileSync('./bd/products.json', 'utf-8'));
@@ -279,10 +279,17 @@ app.put('/admin/products/:productID', (req, res) => {
 
     // Update the selected product
     productsData[productToUpdate].name = name;
-    productsData[productToUpdate].stock = stock;
+    productsData[productToUpdate].price = parseInt(price);
+    productsData[productToUpdate].stock = parseInt(stock);
 
     // Write the updated productsData back to the JSON file
-    fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
+    fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2, (key, value) => {
+      // Convert price and stock values to integers
+      if (key === 'price' || key === 'stock') {
+        return parseInt(value);
+      }
+      return value;
+    }));
 
     return res.status(200).json({ message: 'Product updated successfully.' });
   } catch (error) {
@@ -290,6 +297,7 @@ app.put('/admin/products/:productID', (req, res) => {
     return res.status(500).json({ error: 'An error occurred while updating the product.' });
   }
 });
+
 
 // Add products
 

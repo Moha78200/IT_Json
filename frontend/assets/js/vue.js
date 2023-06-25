@@ -83,7 +83,7 @@ const Login = {
                 <div>
                   <label for="phonenumber" class="sr-only">Phone Number</label>
                   <div class="relative">
-                    <input v-model="phoneNumber" type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" placeholder="Phone Number" required />
+                    <input v-model="phoneNumber" type="number" inputmode="numeric" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm phone" placeholder="Phone Number" required />
                   </div>
                 </div>
         
@@ -175,7 +175,6 @@ const Login = {
         .post("http://localhost:3000/register", userData)
         .then((response) => {
           // Handle the successful registration response
-          console.log(response.data.message);
           // Reset the form fields
           this.firstName = "";
           this.lastName = "";
@@ -199,7 +198,6 @@ const Login = {
         .then((response) => response.json())
         .then((data) => {
           this.users = data;
-          // console.log('Users fetched:', this.users);
           this.checkLoggedInUser();
         })
         .catch((error) => {
@@ -309,7 +307,6 @@ const Home = {
       const likedCookie = this.$cookies.get("like");
       if (likedCookie) {
         this.liked = likedCookie;
-        console.log("liked: ", this.liked)
       }
     },
   
@@ -332,7 +329,6 @@ const Home = {
           this.$cookies.set("like", JSON.stringify(this.liked));
         }, 300);
       });
-      console.log(this.$cookies.get("like"))
     },
     addToCart(product) {
       if (product.stock > 0) {
@@ -395,22 +391,22 @@ const UserSettings = {
       <h1>User Settings</h1>
       <div v-if="isLoggedIn">
         <label for="firstName">First Name:</label>
-        <input type="text" id="firstName" v-model="user.firstName">
+        <input type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="firstName" v-model="user.firstName">
         
         <label for="lastName">Last Name:</label>
-        <input type="text" id="lastName" v-model="user.lastName">
+        <input type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="lastName" v-model="user.lastName">
         
         <label for="phoneNumber">Phone Number:</label>
-        <input type="text" id="phoneNumber" v-model="user.phoneNumber">
+        <input type="text" inputmode="numeric" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="phoneNumber" v-model="user.phoneNumber">
         
         <label for="email">Email:</label>
-        <input type="email" id="email" v-model="user.email">
+        <input type="email" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="email" v-model="user.email">
         
         <label for="billingAddress">Billing Address:</label>
-        <input type="text" id="billingAddress" v-model="user.billingAddress">
+        <input type="text" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="billingAddress" v-model="user.billingAddress">
         
         <label for="password">Password:</label>
-        <input type="password" id="password" v-model="password">
+        <input type="password" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm" id="password" v-model="password">
         <button @click="saveChanges">Save Changes</button>
         <button v-if="isAdmin" @click="redirectToAdminPage">Admin Page</button>
       </div>
@@ -708,9 +704,9 @@ const WishList = {
     </div>
     
     <!-- Most Sold Item -->
-    <div class="most-sold-item card-cart-container">
+    <div v-if="mostSoldItem" class="most-sold-item card-cart-container">
       <h2>Most Sold Item</h2>
-      <div v-if="mostSoldItem" class="card-container">
+      <div class="card-container">
         <div class="card">
           <div class="img-container">
             <img :src="mostSoldItem.img" />
@@ -748,10 +744,9 @@ const WishList = {
           </div>
         </div>
       </div>
-
-      <div v-else>
+    </div>
+    <div v-else>
         <p>Loading...</p>
-      </div>
     </div>
     
     
@@ -820,7 +815,7 @@ const WishList = {
               <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
               <div v-if="useDifferentShippingAddress" class="input-container">
                 <label for="shipping-address-input">Shipping Address:</label>
-                <input type="text" id="shipping-address-input" v-model="shippingAddress" />
+                <input type="text" id="shipping-address-input" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm adress-input" v-model="shippingAddress" />
               </div>
             </div>
             <div class="order-button">
@@ -854,7 +849,6 @@ const WishList = {
     bestCustomer() {
       const customerStats = this.calculateCustomerStats();
       const bestCustomerID = this.findBestCustomerID(customerStats);
-      console.log(this.users)
 
       // Find the customer with the matching ID
       const bestCustomer = this.users.find(
@@ -862,7 +856,6 @@ const WishList = {
       );
 
       // Return the best customer information
-      console.log(bestCustomer)
       return bestCustomer;
     },
     mostSoldItem() {
@@ -1002,7 +995,6 @@ const WishList = {
           this.$cookies.set("like", JSON.stringify(this.liked));
         }, 300);
       });
-      console.log(this.$cookies.get("like"))
     },
     addToCart(product) {
       if (product.stock > 0) {
@@ -1099,7 +1091,7 @@ const adminPage = {
     <div class="flex items-center justify-center mb-4">
       <h2 class="text-2xl font-bold mr-2">Products</h2>
       <router-link to="/add-product">
-        <button class="h-8 bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">ADD</button>
+        <button class="h-8 bg-blue-300 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">ADD</button>
       </router-link>
     </div>
     <div class="overflow-x-auto mb-8">
@@ -1108,6 +1100,7 @@ const adminPage = {
           <tr>
             <th class="border border-black px-4 py-2 text-center bg-blue-100">ID Product</th>
             <th class="border border-black px-4 py-2 text-center bg-blue-100">Name</th>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">Price</th>
             <th class="border border-black px-4 py-2 text-center bg-blue-100">Stock</th>
             <th class="border border-black px-4 py-2 text-center bg-blue-100">Action</th>
           </tr>
@@ -1116,6 +1109,7 @@ const adminPage = {
           <tr v-for="product in products" :key="product.id">
             <td class="border-b border-l px-4 py-2 text-center">{{ product.id }}</td>
             <td class="border-b px-4 py-2 text-center"><input type="text" v-model="product.name" /></td>
+            <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.price" /></td>
             <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.stock" /></td>
             <td class="border-b px-4 py-2 text-center">
               <button :class="{
@@ -1152,16 +1146,6 @@ const adminPage = {
     </div>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
   `,
   name: "adminPage",
   data() {
@@ -1207,7 +1191,8 @@ const adminPage = {
       axios
         .put(`http://localhost:3000/admin/products/${product.id}`, {
           name: product.name,
-          stock: product.stock
+          price: parseInt(product.price),
+          stock: parseInt(product.stock)
         })
         .then(response => {
           console.log(response.data.message);
@@ -1244,7 +1229,7 @@ const addProduct = {
       <form @submit.prevent="saveProduct" class="mt-4">
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label class="text-gray-700 dark:text-gray-200" for="name">Name</label>
+            <label class="text-blue-700 dark:text-gray-200" for="name">Name</label>
             <input id="name" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" v-model="product.name" required>
           </div>
 

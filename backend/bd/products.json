@@ -4,28 +4,28 @@
     "name": "Assassins Creed: Mirage",
     "price": 60,
     "img": "assets/img/assassins-creed-mirage.jpeg",
-    "stock": 14
+    "stock": 12
   },
   {
     "id": 2,
     "name": "Bloodborne",
     "price": 20,
     "img": "assets/img/bloodborne.jpeg",
-    "stock": 9
+    "stock": 8
   },
   {
     "id": 3,
     "name": "Call Of Duty: Modern Warfare 2",
     "price": 55,
     "img": "assets/img/cod-mw2.png",
-    "stock": 5
+    "stock": 4
   },
   {
     "id": 4,
     "name": "Elden Ring",
     "price": 10,
     "img": "assets/img/elden-ring.jpg",
-    "stock": 6
+    "stock": 5
   },
   {
     "id": 5,
@@ -39,28 +39,28 @@
     "name": "Lies Of P",
     "price": 65,
     "img": "assets/img/lies-of-p.jpeg",
-    "stock": 4
+    "stock": 3
   },
   {
     "id": 7,
     "name": "Mario Kart 8 Deluxe",
     "price": 35,
     "img": "assets/img/mario-kart-8.jpeg",
-    "stock": 13
+    "stock": 15
   },
   {
     "id": 8,
     "name": "Super Mario Odyssey",
     "price": 28,
     "img": "assets/img/mario-odyssey.jpg",
-    "stock": "5"
+    "stock": 4
   },
   {
     "id": 9,
     "name": "Pokemon Violet",
     "price": 17,
     "img": "assets/img/pokemon-violet.jpeg",
-    "stock": 4
+    "stock": 3
   },
   {
     "id": 10,
@@ -88,7 +88,7 @@
     "name": "Lego Star War",
     "price": 35,
     "img": "assets/img/LegoStarWars.jpg",
-    "stock": 9
+    "stock": 8
   },
   {
     "id": 14,
@@ -109,14 +109,14 @@
     "name": "XBOX ONE X",
     "price": 450,
     "img": "assets/img/XBOXoneX.png",
-    "stock": 11
+    "stock": 9
   },
   {
     "id": 17,
     "name": "Nintendo SwitchOLED",
     "price": 300,
     "img": "assets/img/SwitchOLED.png",
-    "stock": 32
+    "stock": 29
   },
   {
     "id": 18,
