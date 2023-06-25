@@ -648,9 +648,11 @@ const WishList = {
   template: `
   <div class="home-container">
     <h1>Wish List</h1>
+
     <div v-if="liked.length === 0">
       <p>Your wish list is empty.</p>
     </div>
+
     <div v-else class="card-cart-container">
       <div class="card-container">
         <div v-for="product in liked" class="card">
@@ -692,54 +694,54 @@ const WishList = {
             </div>
           </div>
         </div>
-
-        <!-- Most Sold Item -->
-        <div class="most-sold-item card-cart-container">
-          <h2>Most Sold Item</h2>
-          <div v-if="mostSoldItem" class="card-container">
-            <div class="card">
-
-              <div class="img-container">
-                <img :src="bestItem.img" />
-              </div>
-
-              <div class="card-text">
-                <h3>{{ bestItem.name }}</h3>
-                <p style="background: #2eb7eb;
-                font-weight: bold;
-                padding: 4px 6px;
-                color: white;
-                border-radius: 4px;">{{ bestItem.price }}€</p>
-                
-              </div>
-              <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
-              <div class="card-icons">
-                <div class="like-container">
-                  <input
-                    type="checkbox"
-                    :value="bestItem"
-                    name="checkbox"
-                    v-bind:id="bestItem.id"
-                    v-model="liked"
-                    @click="setLikeCookie()"
-                  />
-                  <label v-bind:for="bestItem.id">
-                    <i class="fas fa-heart"></i>
-                  </label>
-                </div>
-
-                <div class="add-to-cart">
-                  <button v-on:click="addToCart(bestItem)" :disabled="!isProductInStock(bestItem)">
-                    <i class="fas fa-shopping-cart"></i>
-                  </button>
-                  <span v-if="!isProductInStock(bestItem)" class="out-of-stock">Out of Stock</span>
-                  <span v-else class="stock">Available: {{ bestItem.stock }}</span>
-                </div>
-              </div>
+    </div>
+    </div>
+    
+    <!-- Most Sold Item -->
+    <div class="most-sold-item card-cart-container">
+      <h2>Most Sold Item</h2>
+      <div v-if="mostSoldItem" class="card-container">
+        <div class="card">
+          <div class="img-container">
+            <img :src="mostSoldItem.img" />
+          </div>
+          <div class="card-text">
+            <h3>{{ mostSoldItem.name }}</h3>
+            <p style="background: #2eb7eb;
+              font-weight: bold;
+              padding: 4px 6px;
+              color: white;
+              border-radius: 4px;">{{ mostSoldItem.price }}€</p>
+          </div>
+          <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
+          <div class="card-icons">
+            <div class="like-container">
+              <input
+                type="checkbox"
+                :value="mostSoldItem"
+                name="checkbox"
+                v-bind:id="mostSoldItem.id"
+                v-model="liked"
+                @click="setLikeCookie()"
+              />
+              <label v-bind:for="mostSoldItem.id">
+                <i class="fas fa-heart"></i>
+              </label>
             </div>
+            <div class="add-to-cart">
+              <button v-on:click="addToCart(mostSoldItem)" :disabled="!isProductInStock(mostSoldItem)">
+                <i class="fas fa-shopping-cart"></i>
+              </button>
+              <span v-if="!isProductInStock(mostSoldItem)" class="out-of-stock">Out of Stock</span>
+              <span v-else class="stock">Available: {{ mostSoldItem.stock }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
 
-
-        
         <!-- Best Customer -->
         <div class="best-customer">
           <h2>Best Customer</h2>
@@ -807,8 +809,6 @@ const WishList = {
         </transition>
       </div>
     </div>
-    </div>
-    </div>
   </div>
   `,
   name: "WishList",
@@ -821,20 +821,23 @@ const WishList = {
       expeditedDelivery: false,
       orders: [],
       products: [],
-      bestItem: []
+      bestItem: {}
     };
   },
   created() {
-    this.liked = this.$cookies.get("like");
+    this.liked = this.$cookies.get("like") ? this.$cookies.get("like") : [];
   },
   computed: {
     mostSoldItem() {
       const mostSoldItem = this.findMostSoldItem();
       const { id, quantity } = mostSoldItem;
-      console.log(id)
+      console.log("corresonding id: ",id, "and quantity: ", quantity)
+      console.log("list of products: ", this.products)
 
       // Find the product with the matching ID
       this.bestItem = this.products.find((prod) => prod.id === parseInt(id));
+
+      console.log("best item : ", this.bestItem)
       
 
       // Return the product information along with the quantity sold
