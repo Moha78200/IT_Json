@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 
 app.post('/orders', (req, res) => {
   try {
-    const {  deliveryDate, userID, deliveryAddress, products } = req.body;
+    const { deliveryDate, userID, deliveryAddress, products, totalPrice } = req.body;
 
     // Read the existing orders from the JSON file
     let ordersData = JSON.parse(fs.readFileSync('./bd/orders.json', 'utf-8'));
@@ -42,7 +42,8 @@ app.post('/orders', (req, res) => {
       userID,
       deliveryAddress,
       products: products.map(product => ({ id: product.id, quantity: product.quantity })),
-      status: 'Pending Delivery' // Set the initial status as 'Pending Delivery'
+      status: 'Pending Delivery', // Set the initial status as 'Pending Delivery'
+      totalPrice
     };
 
     // Update the stock in the products data based on the ordered quantities
@@ -62,13 +63,15 @@ app.post('/orders', (req, res) => {
     // Write the updated products data back to the JSON file
     fs.writeFileSync('./bd/products.json', JSON.stringify(productsData, null, 2));
 
-
-    res.status(200).json({ message: 'Order created successfully.', orderID: newOrderID });
+    // Send the response with the new orderID and totalPrice
+    res.status(200).json({ message: 'Order created successfully.', orderID: newOrderID, totalPrice });
   } catch (error) {
     console.error('Error creating order:', error);
     res.status(500).json({ error: 'An error occurred while creating the order.' });
   }
 });
+
+
 
 app.post('/register', (req, res) => {
   try {

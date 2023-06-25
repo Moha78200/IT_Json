@@ -274,30 +274,36 @@ const Home = {
   },
   methods: {
     createOrder() {
-      // Create an order object with the necessary information
-      const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-      const deliveryTime = this.expeditedDelivery ? 2 : 5;
-      const deliveryDate = new Date(Date.now() + deliveryTime * 24 * 60 * 60 * 1000);
-      const formattedDeliveryDate = deliveryDate.toISOString().slice(0, 10);
-      const order = {
-        userID: loggedInUser.userID,
-        products: this.cart,
-        deliveryDate: formattedDeliveryDate,
-        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : loggedInUser.billingAddress,
-      };
-  
-      // Make a POST request to save the order into the database
-      axios
-        .post('http://localhost:3000/orders', order)
-        .then((response) => {
-          // Clear the cart after successfully creating the order
-          this.cart = [];
-          alert('Order created successfully!');
-        })
-        .catch((error) => {
-          console.error('Error creating order:', error);
-          alert('An error occurred while creating the order.');
-        });
+      try {
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        const deliveryTime = this.expeditedDelivery ? 2 : 5;
+        const deliveryDate = new Date(Date.now() + deliveryTime * 24 * 60 * 60 * 1000);
+        const formattedDeliveryDate = deliveryDate.toISOString().slice(0, 10);
+        const order = {
+          userID: loggedInUser.userID,
+          products: this.cart,
+          deliveryDate: formattedDeliveryDate,
+          deliveryAddress: this.useDifferentShippingAddress
+            ? this.shippingAddress
+            : loggedInUser.billingAddress,
+          totalPrice: this.cartTotalAmount, // Update totalPrice with cartTotalAmount
+        };
+    
+        // Make a POST request to save the order into the database
+        axios
+          .post("http://localhost:3000/orders", order)
+          .then((response) => {
+            // Clear the cart after successfully creating the order
+            this.cart = [];
+            alert("Order created successfully!");
+          })
+          .catch((error) => {
+            console.error("Error creating order:", error);
+            alert("An error occurred while creating the order.");
+          });
+      } catch {
+        alert("You must be logged in to create an order.");
+      }
     },
     getLikeCookie() {
       const likedCookie = this.$cookies.get("like");
@@ -562,6 +568,9 @@ const OrdersList = {
               Delivery Address
             </th>
             <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
+              Total order price
+            </th>
+            <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
               Delivery Status
             </th>
             <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">
@@ -577,6 +586,7 @@ const OrdersList = {
             </td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryDate }}</td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.deliveryAddress }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ order.totalPrice }}€</td>
             <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">
               <div class="delivery-status">
                 {{ order.status }}
@@ -738,15 +748,26 @@ const WishList = {
           </div>
         </div>
       </div>
+
+      <div v-else>
+        <p>Loading...</p>
+      </div>
     </div>
     
     
 
-        <!-- Best Customer -->
-        <div class="best-customer">
-          <h2>Best Customer</h2>
-          <!-- Display best customer content here -->
-        </div>
+    <!-- Best Customer -->
+    <h1>Best Customer</h1>
+    <div v-if="bestCustomer">
+      <p>Customer ID: {{ bestCustomer.userID }}</p>
+      <p>Firstname: {{ bestCustomer.firstName }}</p>
+      <p>Lastname: {{ bestCustomer.lastName }}</p>
+      <p>Number of Products Bought: {{ this.maxSoldProducts }}</p>
+    </div>
+
+    <div v-else>
+      <p>Loading...</p>
+    </div>
 
         <!-- cart display -->
         <transition name="cart-anim">
@@ -821,25 +842,36 @@ const WishList = {
       expeditedDelivery: false,
       orders: [],
       products: [],
-      bestItem: {}
+      bestItem: {},
+      users: [],
+      maxSoldProducts: ''
     };
   },
   created() {
     this.liked = this.$cookies.get("like") ? this.$cookies.get("like") : [];
   },
   computed: {
+    bestCustomer() {
+      const customerStats = this.calculateCustomerStats();
+      const bestCustomerID = this.findBestCustomerID(customerStats);
+      console.log(this.users)
+
+      // Find the customer with the matching ID
+      const bestCustomer = this.users.find(
+        (user) => user.userID === parseInt(bestCustomerID)
+      );
+
+      // Return the best customer information
+      console.log(bestCustomer)
+      return bestCustomer;
+    },
     mostSoldItem() {
       const mostSoldItem = this.findMostSoldItem();
       const { id, quantity } = mostSoldItem;
-      console.log("corresonding id: ",id, "and quantity: ", quantity)
-      console.log("list of products: ", this.products)
 
       // Find the product with the matching ID
       this.bestItem = this.products.find((prod) => prod.id === parseInt(id));
-
-      console.log("best item : ", this.bestItem)
       
-
       // Return the product information along with the quantity sold
       return { ...this.bestItem, quantity };
     },
@@ -865,6 +897,41 @@ const WishList = {
     },
   },
   methods: {
+    calculateCustomerStats() {
+      const customerStats = {};
+
+      // Iterate over the orders and calculate the quantity of products bought by each customer
+      for (const order of this.orders) {
+        const { userID, products } = order;
+
+        if (!customerStats[userID]) {
+          customerStats[userID] = 0;
+        }
+
+        for (const product of products) {
+          customerStats[userID] += product.quantity;
+        }
+      }
+      return customerStats;
+    },
+
+    findBestCustomerID(customerStats) {
+      let bestCustomerID = null;
+      let maxQuantity = 0;
+
+      // Find the customer with the highest quantity of products
+      for (const userID in customerStats) {
+        const quantity = customerStats[userID];
+
+        if (quantity > maxQuantity) {
+          maxQuantity = quantity;
+          bestCustomerID = userID;
+        }
+      }
+      this.maxSoldProducts = maxQuantity;
+
+      return bestCustomerID;
+    },
     fetchOrders() {
       fetch("../backend/bd/orders.json")
         .then((response) => response.json())
@@ -873,6 +940,16 @@ const WishList = {
         })
         .catch((error) => {
           console.error("Error fetching orders:", error);
+        });
+    },
+    fetchUsers(){
+      fetch("../backend/bd/users.json")
+        .then((response) => response.json())
+        .then((data) => {
+          this.users = data;
+        })
+        .catch((error) => {
+          console.error("Error fetching users:", error);
         });
     },
     findMostSoldItem() {
@@ -973,35 +1050,42 @@ const WishList = {
       this.$delete(this.cart, id);
     },
     createOrder() {
-      // Create an order object with the necessary information
-      const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
-      const deliveryTime = this.expeditedDelivery ? 2 : 5;
-      const deliveryDate = new Date(Date.now() + deliveryTime * 24 * 60 * 60 * 1000);
-      const formattedDeliveryDate = deliveryDate.toISOString().slice(0, 10);
-      const order = {
-        userID: loggedInUser.userID,
-        products: this.cart,
-        deliveryDate: formattedDeliveryDate,
-        deliveryAddress: this.useDifferentShippingAddress ? this.shippingAddress : loggedInUser.billingAddress,
-      };
-
-      // Make a POST request to save the order into the database
-      axios
-        .post('http://localhost:3000/orders', order)
-        .then((response) => {
-          // Clear the cart after successfully creating the order
-          this.cart = [];
-          alert('Order created successfully!');
-        })
-        .catch((error) => {
-          console.error('Error creating order:', error);
-          alert('An error occurred while creating the order.');
-        });
+      try {
+        const loggedInUser = JSON.parse(sessionStorage.getItem("loggedInUser"));
+        const deliveryTime = this.expeditedDelivery ? 2 : 5;
+        const deliveryDate = new Date(Date.now() + deliveryTime * 24 * 60 * 60 * 1000);
+        const formattedDeliveryDate = deliveryDate.toISOString().slice(0, 10);
+        const order = {
+          userID: loggedInUser.userID,
+          products: this.cart,
+          deliveryDate: formattedDeliveryDate,
+          deliveryAddress: this.useDifferentShippingAddress
+            ? this.shippingAddress
+            : loggedInUser.billingAddress,
+          totalPrice: this.cartTotalAmount, // Update totalPrice with cartTotalAmount
+        };
+    
+        // Make a POST request to save the order into the database
+        axios
+          .post("http://localhost:3000/orders", order)
+          .then((response) => {
+            // Clear the cart after successfully creating the order
+            this.cart = [];
+            alert("Order created successfully!");
+          })
+          .catch((error) => {
+            console.error("Error creating order:", error);
+            alert("An error occurred while creating the order.");
+          });
+      } catch {
+        alert("You must be logged in to create an order.");
+      }
     },
   },
   mounted() {
     this.fetchProducts();
     this.fetchOrders();
+    this.fetchUsers();
   }
 };
 
