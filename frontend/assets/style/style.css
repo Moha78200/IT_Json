@@ -542,3 +542,7 @@ nav .nav-container #icons i:hover {
 
   /*--------------------------ADMIN-----------------------------*/
 
+  .adress-input{
+    background-color: white;
+    color: black;
+  }
