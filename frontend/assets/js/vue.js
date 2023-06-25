@@ -1006,92 +1006,67 @@ const WishList = {
 
 const adminPage = {
   template: `
-  <!--
-    <div>
-      <h1>Admin Page</h1>
-
+  <div class="flex flex-col md:flex-row">
+  <div class="md:w-1/2 flex-1 mt-16">
+    <!-- Partie Produit -->
+    <div class="flex items-center justify-center mb-4">
+      <h2 class="text-2xl font-bold mr-2">Products</h2>
       <router-link to="/add-product">
-        <button>Add Product</button>
+        <button class="h-8 bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">ADD</button>
       </router-link>
-
-      <h2>Products</h2>
-      <ul>
-        <li v-for="product in products" :key="product.id">
-          <div>
-            <label>Product ID: {{ product.id }}</label>
-            <input type="text" v-model="product.name" />
-            <input type="number" v-model="product.stock" />
-            <button style="background-color: {{ product.stock < 3 ? 'red' : 'blue' }}; color: white; font-weight: bold; padding: 8px 12px; border-radius: 4px;" @click="updateProduct(product)">Update</button>
-            <button style="background-color: red; color: white; font-weight: bold; padding: 8px 12px; border-radius: 4px;" @click="deleteProduct(product.id)">Delete</button>
-
-          </div>
-        </li>
-      </ul>
-
-      <h2>Orders</h2>
-      <ul>
-        <li v-for="order in orders" :key="order.orderID">
-          Order ID: {{ order.orderID }}, User ID: {{ order.userID }}, Status: {{ order.status }}
-        </li>
-      </ul>
     </div>
-    -->
-    
-    <div class="flex space-x-4 md:flex-row">
-      <div class="md:w-1/2 flex-1 mt-16">
-        <!-- Partie Produit -->
-        <div class="flex items-center justify-center mb-4">
-          <h2 class="text-2xl font-bold mr-2">Products</h2>
-          <router-link to="/add-product">
-            <button class="h-8 bg-green-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">  ADD    </button>
-          </router-link>
-        </div>
-        <table class="w-full mb-8">
-          <thead>
-            <tr>
-              <th class="border border-black px-4 py-2 text-center">ID Product</th>
-              <th class="border border-black px-4 py-2 text-center">Name</th>
-              <th class="border border-black px-4 py-2 text-center">Stock</th>
-              <th class="border border-black px-4 py-2 text-center">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="product in products" :key="product.id">
-              <td class="border-b border-l px-4 py-2 text-center">{{ product.id }}</td>
-              <td class="border-b px-4 py-2 text-center"><input type="text" v-model="product.name" /></td>
-              <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.stock" /></td>
-              <td class="border-b px-4 py-2 text-center">
-                <button :class="{
-                  'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded': true,
-                  'bg-orange-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded': product.stock < 3
-                }" @click="updateProduct(product)">Update</button>
-                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="md:w-1/2 flex-1 mt-16">
-        <!-- Partie Order -->
-        <h2 class="text-2xl font-bold mb-4 text-center">Orders</h2>
-        <table class="w-full">
-          <thead>
-            <tr>
-              <th class="border border-black px-4 py-2 text-center">ID Order</th>
-              <th class="border border-black px-4 py-2 text-center">ID User</th>
-              <th class="border border-black px-4 py-2 text-center">Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="order in orders" :key="order.orderID">
-              <td class="border-l border-b px-4 py-2 text-center">{{ order.orderID }}</td>
-              <td class="border-b px-4 py-2 text-center">{{ order.userID }}</td>
-              <td class="border-r border-b px-4 py-2 text-center">{{ order.status }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div class="overflow-x-auto mb-8">
+      <table class="w-full ">
+        <thead>
+          <tr>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">ID Product</th>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">Name</th>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">Stock</th>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="product in products" :key="product.id">
+            <td class="border-b border-l px-4 py-2 text-center">{{ product.id }}</td>
+            <td class="border-b px-4 py-2 text-center"><input type="text" v-model="product.name" /></td>
+            <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.stock" /></td>
+            <td class="border-b px-4 py-2 text-center">
+              <button :class="{
+                'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded': true,
+                'bg-orange-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded': product.stock < 3
+              }" @click="updateProduct(product)">Update</button>
+              <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded" @click="deleteProduct(product.id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
+  </div>
+  <div class="md:w-1/2 flex-1 mt-16">
+    <!-- Partie Order -->
+    <h2 class="text-2xl font-bold mb-4 text-center">Orders</h2>
+    <div class="overflow-x-auto mb-8">
+      <table class="w-full">
+        <thead>
+          <tr>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">ID Order</th>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">ID User</th>
+            <th class="border border-black px-4 py-2 text-center bg-blue-100">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="order in orders" :key="order.orderID">
+            <td class="border-l border-b px-4 py-2 text-center">{{ order.orderID }}</td>
+            <td class="border-b px-4 py-2 text-center">{{ order.userID }}</td>
+            <td class="border-r border-b px-4 py-2 text-center">{{ order.status }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
 
 
 
@@ -1173,24 +1148,41 @@ const adminPage = {
 
 const addProduct = {
   template: `
-    <div>
-      <h1>Add Product</h1>
-      <form @submit.prevent="saveProduct">
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="product.name" required>
-        
-        <label for="price">Price:</label>
-        <input type="number" id="price" v-model="product.price" required>
-        
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" v-model="product.stock" required>
-        
-        <label for="img">Image:</label>
-        <input type="file" id="img" @change="handleImageUpload" required>
-        
-        <button type="submit">Save Product</button>
+  
+
+    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
+      <div class="flex items-center justify-center"
+        <h1 class="text-lg font-semibold text-gray-700 capitalize dark:text-white mt-16 text-center">Add Product</h2>
+      </div>
+      <form @submit.prevent="saveProduct" class="mt-4">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+          <div>
+            <label class="text-gray-700 dark:text-gray-200" for="name">Name</label>
+            <input id="name" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" v-model="product.name" required>
+          </div>
+
+          <div>
+            <label class="text-gray-700 dark:text-gray-200" for="price">Price</label>
+            <input id="price" type="number" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" v-model="product.price" required>
+          </div>
+
+          <div>
+            <label class="text-gray-700 dark:text-gray-200" for="stock">Stock</label>
+            <input id="stock" type="number" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" v-model="product.stock" required>
+          </div>
+
+          <div>
+            <label class="text-gray-700 dark:text-gray-200" for="img">Image</label>
+            <input id="img" type="file" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" @change="handleImageUpload" required>
+          </div>
+        </div>
+
+        <div class="flex justify-end mt-6">
+          <button class="px-8 py-2.5 leading-5 text-white transition-colors duration-300 transform bg-gray-700 rounded-md hover:bg-gray-600 focus:outline-none focus:bg-gray-600" type="submit">Save Product</button>
+        </div>
       </form>
-    </div>
+    </section>
+
   `,
   name: "addProduct",
   data() {

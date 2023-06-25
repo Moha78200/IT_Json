@@ -138,5 +138,12 @@
     "price": 299,
     "img": "assets/img/Oculus.jpg",
     "stock": 7
+  },
+  {
+    "id": 21,
+    "name": "iphone",
+    "price": "860",
+    "stock": "7",
+    "img": "assets/img/iphone.jpeg"
   }
 ]
