@@ -904,6 +904,7 @@ const WishList = {
 
 const adminPage = {
   template: `
+  <!--
     <div>
       <h1>Admin Page</h1>
 
@@ -931,6 +932,65 @@ const adminPage = {
         </li>
       </ul>
     </div>
+    -->
+
+    <div>
+      <h1>Admin Page</h1>
+
+      <router-link to="/add-product">
+        <button>Add Product</button>
+      </router-link>
+
+      <div class="flex">
+        <div class="w-1/2 pr-4">
+          <h2>Products</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID Product</th>
+                <th>Name</th>
+                <th>Stock</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="product in products" :key="product.id">
+                <td>{{ product.id }}</td>
+                <td><input type="text" v-model="product.name" /></td>
+                <td><input type="number" v-model="product.stock" /></td>
+                <td>
+                  <button :style="{ backgroundColor: product.stock < 3 ? 'red' : '' }" @click="updateProduct(product)">Update</button>
+                  <button @click="deleteProduct(product.id)">Delete</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="w-1/2 pl-4">
+          <h2>Orders</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>ID Order</th>
+                <th>ID User</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="order in orders" :key="order.orderID">
+                <td>{{ order.orderID }}</td>
+                <td>{{ order.userID }}</td>
+                <td>{{ order.status }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+
+
   `,
   name: "adminPage",
   data() {
