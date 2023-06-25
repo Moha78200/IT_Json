@@ -296,6 +296,7 @@ const Home = {
       const likedCookie = this.$cookies.get("like");
       if (likedCookie) {
         this.liked = likedCookie;
+        console.log("liked: ", this.liked)
       }
     },
   
@@ -318,6 +319,7 @@ const Home = {
           this.$cookies.set("like", JSON.stringify(this.liked));
         }, 300);
       });
+      console.log(this.$cookies.get("like"))
     },
     addToCart(product) {
       if (product.stock > 0) {
@@ -686,7 +688,7 @@ const WishList = {
             <div class="like-container">
               <input
                 type="checkbox"
-                :value="product.id"
+                :value="product"
                 name="checkbox"
                 v-bind:id="product.id"
                 v-model="liked"
@@ -766,25 +768,7 @@ const WishList = {
     };
   },
   created() {
-    const likedCookie = this.$cookies.get("like");
-    console.log("likedCookie:", likedCookie, "And parse : ", JSON.parse(likedCookie));
-    if (likedCookie) {
-      try {
-        const likedProductIds = JSON.parse(likedCookie);
-        // Make an API request to fetch product details based on the product ids
-        axios.get(`http://localhost:3000/wished`, { params: { ids: likedProductIds } })
-          .then(response => {
-            this.liked = response.data;
-          })
-          .catch(error => {
-            console.error("Error fetching product details:", error);
-            this.liked = [];
-          });
-      } catch (error) {
-        console.error("Error parsing liked cookie:", error);
-        this.liked = [];
-      }
-    }
+    this.liked = this.$cookies.get("like");
   },
   computed: {
     cartTotalAmount() {
@@ -823,7 +807,12 @@ const WishList = {
       return product.stock > 0;
     },
     setLikeCookie() {
-      this.$cookies.set("like", JSON.stringify(this.liked));
+      document.addEventListener("input", () => {
+        setTimeout(() => {
+          this.$cookies.set("like", JSON.stringify(this.liked));
+        }, 300);
+      });
+      console.log(this.$cookies.get("like"))
     },
     addToCart(product) {
       if (product.stock > 0) {
