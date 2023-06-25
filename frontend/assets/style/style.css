@@ -552,3 +552,19 @@ nav .nav-container #icons i:hover {
   -webkit-appearance: none;
   margin: 0;
 }
+
+
+  /*--------------------------WISH LIST-----------------------------*/
+
+  .section-container {
+    display: flex;
+  }
+  
+  .most-sold-item {
+    flex: 1;
+  }
+  
+  .best-customer-container {
+    flex: 1;
+  }
+  

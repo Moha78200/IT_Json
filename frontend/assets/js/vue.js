@@ -652,8 +652,13 @@ const OrdersList = {
 
 const WishList = {
   template: `
-  <div class="home-container">
-    <h1>Wish List</h1>
+  
+
+  
+<div class="home-container">
+<!-- Tableau 1 - Wish List -->
+  <div>
+    <h1 class="text-center">Wish List</h1>
 
     <div v-if="liked.length === 0">
       <p>Your wish list is empty.</p>
@@ -701,131 +706,137 @@ const WishList = {
           </div>
         </div>
     </div>
-    </div>
-    
-    <!-- Most Sold Item -->
-    <div v-if="mostSoldItem" class="most-sold-item card-cart-container">
-      <h2>Most Sold Item</h2>
-      <div class="card-container">
-        <div class="card">
-          <div class="img-container">
-            <img :src="mostSoldItem.img" />
-          </div>
-          <div class="card-text">
-            <h3>{{ mostSoldItem.name }}</h3>
-            <p style="background: #2eb7eb;
-              font-weight: bold;
-              padding: 4px 6px;
-              color: white;
-              border-radius: 4px;">{{ mostSoldItem.price }}€</p>
-          </div>
-          <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
-          <div class="card-icons">
-            <div class="like-container">
-              <input
-                type="checkbox"
-                :value="mostSoldItem"
-                name="checkbox"
-                v-bind:id="mostSoldItem.id"
-                v-model="liked"
-                @click="setLikeCookie()"
-              />
-              <label v-bind:for="mostSoldItem.id">
-                <i class="fas fa-heart"></i>
-              </label>
+  </div>
+
+  <!-- Most Sold Item -->
+    <div class="section-container">
+      <div v-if="mostSoldItem" class="most-sold-item card-cart-container">
+        <h2>Most Sold Item</h2>
+        <div class="card-container">
+          <div class="card">
+            <div class="img-container">
+              <img :src="mostSoldItem.img" />
             </div>
-            <div class="add-to-cart">
-              <button v-on:click="addToCart(mostSoldItem)" :disabled="!isProductInStock(mostSoldItem)">
-                <i class="fas fa-shopping-cart"></i>
-              </button>
-              <span v-if="!isProductInStock(mostSoldItem)" class="out-of-stock">Out of Stock</span>
-              <span v-else class="stock">Available: {{ mostSoldItem.stock }}</span>
+            <div class="card-text">
+              <h3>{{ mostSoldItem.name }}</h3>
+              <p style="background: #2eb7eb;
+                font-weight: bold;
+                padding: 4px 6px;
+                color: white;
+                border-radius: 4px;">{{ mostSoldItem.price }}€</p>
+            </div>
+            <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
+            <div class="card-icons">
+              <div class="like-container">
+                <input
+                  type="checkbox"
+                  :value="mostSoldItem"
+                  name="checkbox"
+                  v-bind:id="mostSoldItem.id"
+                  v-model="liked"
+                  @click="setLikeCookie()"
+                />
+                <label v-bind:for="mostSoldItem.id">
+                  <i class="fas fa-heart"></i>
+                </label>
+              </div>
+              <div class="add-to-cart">
+                <button v-on:click="addToCart(mostSoldItem)" :disabled="!isProductInStock(mostSoldItem)">
+                  <i class="fas fa-shopping-cart"></i>
+                </button>
+                <span v-if="!isProductInStock(mostSoldItem)" class="out-of-stock">Out of Stock</span>
+                <span v-else class="stock">Available: {{ mostSoldItem.stock }}</span>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
-    <div v-else>
+      <div v-else>
         <p>Loading...</p>
+      </div>
     </div>
-    
-    
+  
+  
 
     <!-- Best Customer -->
     <h1>Best Customer</h1>
-    <div v-if="bestCustomer">
-      <p>Customer ID: {{ bestCustomer.userID }}</p>
-      <p>Firstname: {{ bestCustomer.firstName }}</p>
-      <p>Lastname: {{ bestCustomer.lastName }}</p>
-      <p>Number of Products Bought: {{ this.maxSoldProducts }}</p>
-    </div>
+    <div class ="best-customer-container">
+      <div v-if="bestCustomer">
+        <p>Customer ID: {{ bestCustomer.userID }}</p>
+        <p>Firstname: {{ bestCustomer.firstName }}</p>
+        <p>Lastname: {{ bestCustomer.lastName }}</p>
+        <p>Number of Products Bought: {{ this.maxSoldProducts }}</p>
+      </div>
 
-    <div v-else>
-      <p>Loading...</p>
-    </div>
-
-        <!-- cart display -->
-        <transition name="cart-anim">
-          <div v-if="cart.length > 0" class="shopping-cart" id="shopping-cart">
-            <h2>Cart</h2>
-
-            <transition-group name="item-anim" tag="div" class="item-group">
-              <div v-for="product, id in cart" class="item" v-bind:key="product.id">
-
-                <div class="img-container">
-                  <img v-bind:src='product.img' />
-                </div>
-
-                <div class="item-description">
-                  <h4>{{ product.name }}</h4>
-                  <p>{{ product.price }}€</p>
-                </div>
-
-                <div class="item-quantity">
-                  <h6>quantité : {{ product.quantity }}</h6>
-
-                  <div class="cart-icons">
-                    <button v-on:click="cartPlusOne(product)">
-                      <i class="fa fa-plus"></i>
-                    </button>
-                    <button v-on:click="cartMinusOne(product, id)">
-                      <i class="fa fa-minus"></i>
-                    </button>
-                    <button @click="cartRemoveItem(id)">
-                      <i class="fa fa-trash"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </transition-group>
-
-            <div class="grand-total">
-              <div class="total">
-                <h2>Total</h2>
-                <h2>{{ cartTotalAmount }} €</h2>
-              </div>
-              <h6>Total articles : {{ itemTotalAmount }}</h6>
-            </div>
-            <div class="expedited-delivery">
-                <label for="expedited-delivery-checkbox">Expedited Delivery</label>
-                <input type="checkbox" id="expedited-delivery-checkbox" v-model="expeditedDelivery" />
-              </div>
-            <div class="shipping-address">
-              <label for="shipping-address-checkbox">Provide a different shipping address</label>
-              <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
-              <div v-if="useDifferentShippingAddress" class="input-container">
-                <label for="shipping-address-input">Shipping Address:</label>
-                <input type="text" id="shipping-address-input" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm adress-input" v-model="shippingAddress" />
-              </div>
-            </div>
-            <div class="order-button">
-              <button @click="createOrder">Commander</button>
-            </div>
-          </div>
-        </transition>
+      <div v-else>
+        <p>Loading...</p>
       </div>
     </div>
-  </div>
+
+      <!-- cart display -->
+      <transition name="cart-anim">
+        <div v-if="cart.length > 0" class="shopping-cart" id="shopping-cart">
+          <h2>Cart</h2>
+
+          <transition-group name="item-anim" tag="div" class="item-group">
+            <div v-for="product, id in cart" class="item" v-bind:key="product.id">
+
+              <div class="img-container">
+                <img v-bind:src='product.img' />
+              </div>
+
+              <div class="item-description">
+                <h4>{{ product.name }}</h4>
+                <p>{{ product.price }}€</p>
+              </div>
+
+              <div class="item-quantity">
+                <h6>quantité : {{ product.quantity }}</h6>
+
+                <div class="cart-icons">
+                  <button v-on:click="cartPlusOne(product)">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                  <button v-on:click="cartMinusOne(product, id)">
+                    <i class="fa fa-minus"></i>
+                  </button>
+                  <button @click="cartRemoveItem(id)">
+                    <i class="fa fa-trash"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </transition-group>
+
+          <div class="grand-total">
+            <div class="total">
+              <h2>Total</h2>
+              <h2>{{ cartTotalAmount }} €</h2>
+            </div>
+            <h6>Total articles : {{ itemTotalAmount }}</h6>
+          </div>
+          <div class="expedited-delivery">
+              <label for="expedited-delivery-checkbox">Expedited Delivery</label>
+              <input type="checkbox" id="expedited-delivery-checkbox" v-model="expeditedDelivery" />
+            </div>
+          <div class="shipping-address">
+            <label for="shipping-address-checkbox">Provide a different shipping address</label>
+            <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
+            <div v-if="useDifferentShippingAddress" class="input-container">
+              <label for="shipping-address-input">Shipping Address:</label>
+              <input type="text" id="shipping-address-input" class="w-full rounded-lg border-gray-200 p-4 pe-12 text-sm shadow-sm adress-input" v-model="shippingAddress" />
+            </div>
+          </div>
+          <div class="order-button">
+            <button @click="createOrder">Commander</button>
+          </div>
+        </div>
+      </transition>
+    </div>
+</div>
+
+
+
   `,
   name: "WishList",
   data() {
