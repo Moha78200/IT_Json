@@ -117,7 +117,7 @@
           <!-- cart display -->
           <transition name="cart-anim">
             <div v-if="cart.length > 0" class="shopping-cart" id="shopping-cart">
-              <h2>Panier</h2>
+              <h2>Shopping Cart</h2>
 
               <transition-group name="item-anim" tag="div" class="item-group">
                 <div v-for="product, id in cart" class="item" v-bind:key="product.id">
@@ -156,6 +156,16 @@
                 </div>
                 <h6>Total articles : {{ itemTotalAmount }}</h6>
               </div>
+
+              <div class="shipping-address">
+                <label for="shipping-address-checkbox">Provide a different shipping address</label>
+                <input type="checkbox" id="shipping-address-checkbox" v-model="useDifferentShippingAddress" />
+                <div v-if="useDifferentShippingAddress" class="input-container">
+                  <label for="shipping-address-input">Shipping Address:</label>
+                  <input type="text" id="shipping-address-input" v-model="shippingAddress" />
+                </div>
+              </div>
+              
               <div class="order-button">
                 <button @click="createOrder">Commander</button>
               </div>
