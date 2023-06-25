@@ -1033,26 +1033,7 @@ const adminPage = {
 
 const addProduct = {
   template: `
-    <!--
-    <div>
-      <h1>Add Product</h1>
-      <form @submit.prevent="saveProduct">
-        <label for="name">Name:</label>
-        <input type="text" id="name" v-model="product.name" required>
-        
-        <label for="price">Price:</label>
-        <input type="number" id="price" v-model="product.price" required>
-        
-        <label for="stock">Stock:</label>
-        <input type="number" id="stock" v-model="product.stock" required>
-        
-        <label for="img">Image:</label>
-        <input type="file" id="img" @change="handleImageUpload" required>
-        
-        <button type="submit">Save Product</button>
-      </form>
-    </div>
-    -->
+  
 
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
       <div class="flex items-center justify-center"
