@@ -661,8 +661,11 @@ const WishList = {
 
           <div class="card-text">
             <h3>{{ product.name }}</h3>
-            <p>Price: {{ product.price }}€</p>
-            <p class="stock">Stock: {{ product.stock }}</p>
+            <p style="background: #2eb7eb;
+            font-weight: bold;
+            padding: 4px 6px;
+            color: white;
+            border-radius: 4px;">{{ product.price }}€</p>
           </div>
 
           <div class="card-icons">
@@ -690,10 +693,63 @@ const WishList = {
           </div>
         </div>
 
+        <!-- Most Sold Item -->
+        <div class="most-sold-item card-cart-container">
+          <h2>Most Sold Item</h2>
+          <div v-if="mostSoldItem" class="card-container">
+            <div class="card">
+
+              <div class="img-container">
+                <img :src="bestItem.img" />
+              </div>
+
+              <div class="card-text">
+                <h3>{{ bestItem.name }}</h3>
+                <p style="background: #2eb7eb;
+                font-weight: bold;
+                padding: 4px 6px;
+                color: white;
+                border-radius: 4px;">{{ bestItem.price }}€</p>
+                
+              </div>
+              <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
+              <div class="card-icons">
+                <div class="like-container">
+                  <input
+                    type="checkbox"
+                    :value="bestItem"
+                    name="checkbox"
+                    v-bind:id="bestItem.id"
+                    v-model="liked"
+                    @click="setLikeCookie()"
+                  />
+                  <label v-bind:for="bestItem.id">
+                    <i class="fas fa-heart"></i>
+                  </label>
+                </div>
+
+                <div class="add-to-cart">
+                  <button v-on:click="addToCart(bestItem)" :disabled="!isProductInStock(bestItem)">
+                    <i class="fas fa-shopping-cart"></i>
+                  </button>
+                  <span v-if="!isProductInStock(bestItem)" class="out-of-stock">Out of Stock</span>
+                  <span v-else class="stock">Available: {{ bestItem.stock }}</span>
+                </div>
+              </div>
+            </div>
+
+
+        
+        <!-- Best Customer -->
+        <div class="best-customer">
+          <h2>Best Customer</h2>
+          <!-- Display best customer content here -->
+        </div>
+
         <!-- cart display -->
         <transition name="cart-anim">
           <div v-if="cart.length > 0" class="shopping-cart" id="shopping-cart">
-            <h2>Panier</h2>
+            <h2>Cart</h2>
 
             <transition-group name="item-anim" tag="div" class="item-group">
               <div v-for="product, id in cart" class="item" v-bind:key="product.id">
@@ -751,6 +807,8 @@ const WishList = {
         </transition>
       </div>
     </div>
+    </div>
+    </div>
   </div>
   `,
   name: "WishList",
@@ -761,12 +819,27 @@ const WishList = {
       useDifferentShippingAddress: false,
       shippingAddress: '',
       expeditedDelivery: false,
+      orders: [],
+      products: [],
+      bestItem: []
     };
   },
   created() {
     this.liked = this.$cookies.get("like");
   },
   computed: {
+    mostSoldItem() {
+      const mostSoldItem = this.findMostSoldItem();
+      const { id, quantity } = mostSoldItem;
+      console.log(id)
+
+      // Find the product with the matching ID
+      this.bestItem = this.products.find((prod) => prod.id === parseInt(id));
+      
+
+      // Return the product information along with the quantity sold
+      return { ...this.bestItem, quantity };
+    },
     cartTotalAmount() {
       let total = 0;
       for (let item in this.cart) {
@@ -789,6 +862,47 @@ const WishList = {
     },
   },
   methods: {
+    fetchOrders() {
+      fetch("../backend/bd/orders.json")
+        .then((response) => response.json())
+        .then((data) => {
+          this.orders = data;
+        })
+        .catch((error) => {
+          console.error("Error fetching orders:", error);
+        });
+    },
+    findMostSoldItem() {
+      const itemQuantities = {};
+
+      // Iterate through each order
+      this.orders.forEach((order) => {
+        // Iterate through each product in the order
+        order.products.forEach((product) => {
+          const { id, quantity } = product;
+
+          // Update the quantity for the product ID
+          if (itemQuantities.hasOwnProperty(id)) {
+            itemQuantities[id] += quantity;
+          } else {
+            itemQuantities[id] = quantity;
+          }
+        });
+      });
+
+      // Find the ID of the most sold item
+      let mostSoldItemId = null;
+      let mostSoldQuantity = 0;
+
+      for (const id in itemQuantities) {
+        if (itemQuantities[id] > mostSoldQuantity) {
+          mostSoldItemId = id;
+          mostSoldQuantity = itemQuantities[id];
+        }
+      }
+
+      return { id: mostSoldItemId, quantity: mostSoldQuantity };
+    },
     fetchProducts() {
       fetch("../backend/bd/products.json")
         .then((response) => response.json())
@@ -884,6 +998,7 @@ const WishList = {
   },
   mounted() {
     this.fetchProducts();
+    this.fetchOrders();
   }
 };
 
