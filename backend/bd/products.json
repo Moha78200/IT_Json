@@ -4,14 +4,14 @@
     "name": "Assassins Creed: Mirage",
     "price": 60,
     "img": "assets/img/assassins-creed-mirage.jpeg",
-    "stock": 20
+    "stock": "15"
   },
   {
     "id": 2,
     "name": "Bloodborne",
     "price": 20,
     "img": "assets/img/bloodborne.jpeg",
-    "stock": 11
+    "stock": 10
   },
   {
     "id": 3,
@@ -67,7 +67,7 @@
     "name": "Sekiro: Shadows Die Twice",
     "price": 29,
     "img": "assets/img/sekiro.jpg",
-    "stock": 2
+    "stock": 1
   },
   {
     "id": 11,
@@ -138,5 +138,19 @@
     "price": 299,
     "img": "assets/img/Oculus.jpg",
     "stock": 7
+  },
+  {
+    "id": 21,
+    "name": "test",
+    "price": "12",
+    "stock": "100",
+    "img": "assets/img/test.jpeg"
+  },
+  {
+    "id": 22,
+    "name": "gants",
+    "price": "51",
+    "stock": "77",
+    "img": "assets/img/gants.jpeg"
   }
 ]
