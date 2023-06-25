@@ -928,11 +928,10 @@ const adminPage = {
       <div class="md:w-1/2 flex-1 mt-16">
         <!-- Partie Produit -->
         <div class="flex items-center justify-center mb-4">
-          <h2 class="text-2xl font-bold mr-2">Produits</h2>
+          <h2 class="text-2xl font-bold mr-2">Products</h2>
           <router-link to="/add-product">
             <button>
               <svg xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 448 512">
-                <!-- Votre code SVG ici -->
                 <path d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zM200 344V280H136c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V168c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H248v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/>
               </svg>
             </button>
@@ -950,8 +949,8 @@ const adminPage = {
           <tbody>
             <tr v-for="product in products" :key="product.id">
               <td class="border-b border-l px-4 py-2 text-center">{{ product.id }}</td>
-              <td class="border-b px-4 py-2 text-center">{{ product.name }}</td>
-              <td class="border-b px-4 py-2 text-center">{{ product.stock }}</td>
+              <td class="border-b px-4 py-2 text-center"><input type="text" v-model="product.name" /></td>
+              <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.stock" /></td>
               <td class="border-b px-4 py-2 text-center">
                 <button :class="{
                   'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded': true,
