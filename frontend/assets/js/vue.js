@@ -15,9 +15,9 @@ const Login = {
 
       <!-- LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
       <div class="grid grid-cols-2">
-        <div class="LOGIN border border-black mt-0">
+        <div class="LOGIN mt-0">
           <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-            <form v-if="!isLoggedIn" @submit="login" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4 border border-black">
+            <form v-if="!isLoggedIn" @submit="login" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Log In</h1>
               </div>
@@ -58,10 +58,10 @@ const Login = {
 
         <!--REGISTERRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR-->
 
-        <div class="REGISTER border border-black">
+        <div class="REGISTER">
         
           <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
-            <form v-if="!isLoggedIn" @submit="register" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4 border border-black">
+            <form v-if="!isLoggedIn" @submit="register" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Register</h1>
               </div>
@@ -1134,6 +1134,7 @@ const adminPage = {
       </table>
     </div>
   </div>
+  &emsp;
   <div class="md:w-1/2 flex-1 mt-16">
     <!-- Partie Order -->
     <h2 class="text-2xl font-bold mb-4 text-center">Orders</h2>
@@ -1148,9 +1149,9 @@ const adminPage = {
         </thead>
         <tbody>
           <tr v-for="order in orders" :key="order.orderID">
-            <td class="border-l border-b px-4 py-2 text-center">{{ order.orderID }}</td>
-            <td class="border-b px-4 py-2 text-center">{{ order.userID }}</td>
-            <td class="border-r border-b px-4 py-2 text-center">{{ order.status }}</td>
+            <td class="border-l border-b px-4 py-2 text-center " style="width: 100px "> {{ order.orderID }}</td>
+            <td class="border-b px-4 py-2 text-center " style="width: 100px">{{ order.userID }}</td>
+            <td class="border-r border-b px-4 py-2 text-center" style="width: 100px">{{ order.status }}</td>
           </tr>
         </tbody>
       </table>
