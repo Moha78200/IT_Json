@@ -502,7 +502,7 @@ nav .nav-container #icons i:hover {
   background-color: rgb(37 99 235);}
 
   th, td {
-    border-right: 1px solid black;
+    border: 1px solid black;
   }
 
   .product-images {
@@ -556,13 +556,11 @@ nav .nav-container #icons i:hover {
 
   /*--------------------------WISH LIST-----------------------------*/
 
-  .section-container {
-    display: flex;
-  }
+
   
-  .most-sold-item {
+  /* .most-sold-item {
     flex: 1;
-  }
+  } */
   
   .best-customer-container {
     flex: 1;

@@ -1,17 +1,50 @@
 const Login = {
   template: `
   <section>
+<br><br><br><br>
+<div class="best-customer-container max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-white-800 text-center items-center">
+<h2>Best Customer</h2>
+
+<div v-if="bestCustomer" class="items-center justify-center">
+  <span>Shout out to our best customer!!! Try to beat him.</span>
+  <div class="table-container">
+    <table class="max-w-full w-4/5 mx-auto">
+      <thead>
+        <tr>
+          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Customer ID</th>
+          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Firstname</th>
+          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Lastname</th>
+          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Number of Products Bought</th>
+        </tr>
+      </thead>
+      <tbody class="items-center rounded-lg">
+        <tr>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.userID }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.firstName }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.lastName }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ maxSoldProducts }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div v-else>
+  <p>Loading...</p>
+</div>
+</div>
+
 
   <!--------------------------------------------------------------------------------------------------------->
+
+
+    <section>
     <div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
     <br> <br>
       <button v-if="isLoggedIn" @click="logout" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white hover:bg-blue-600">
         Logout
       </button>
     </div>
-
-
-    <section>
 
       <!-- LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
       <div class="grid grid-cols-2">
@@ -127,6 +160,8 @@ const Login = {
   `,
   data() {
     return {
+      maxSoldProducts: '',
+      orders: [],
       users: [],
       email: "",
       password: "",
@@ -139,7 +174,75 @@ const Login = {
       billingAddress: "",
     };
   },
-  methods: {
+  computed: {
+    bestCustomer() {
+      const customerStats = this.calculateCustomerStats();
+      const bestCustomerID = this.findBestCustomerID(customerStats);
+
+      // Find the customer with the matching ID
+      const bestCustomer = this.users.find(
+        (user) => user.userID === parseInt(bestCustomerID)
+      );
+
+      // Return the best customer information
+      return bestCustomer;
+    },
+  },
+  methods: {    
+    calculateCustomerStats() {
+    const customerStats = {};
+
+    // Iterate over the orders and calculate the quantity of products bought by each customer
+    for (const order of this.orders) {
+      const { userID, products } = order;
+
+      if (!customerStats[userID]) {
+        customerStats[userID] = 0;
+      }
+
+      for (const product of products) {
+        customerStats[userID] += product.quantity;
+      }
+    }
+    return customerStats;
+  },
+  findBestCustomerID(customerStats) {
+    let bestCustomerID = null;
+    let maxQuantity = 0;
+
+    // Find the customer with the highest quantity of products
+    for (const userID in customerStats) {
+      const quantity = customerStats[userID];
+
+      if (quantity > maxQuantity) {
+        maxQuantity = quantity;
+        bestCustomerID = userID;
+      }
+    }
+    this.maxSoldProducts = maxQuantity;
+
+    return bestCustomerID;
+  },
+  fetchOrders() {
+    fetch("../backend/bd/orders.json")
+      .then((response) => response.json())
+      .then((data) => {
+        this.orders = data;
+      })
+      .catch((error) => {
+        console.error("Error fetching orders:", error);
+      });
+  },
+  fetchProducts() {
+    fetch("../backend/bd/products.json")
+      .then((response) => response.json())
+      .then((data) => {
+        this.products = data;
+      })
+      .catch((error) => {
+        console.error("Error fetching products:", error);
+      });
+  },
     login(event) {
       event.preventDefault();
       const user = this.users.find(
@@ -230,6 +333,8 @@ const Login = {
   created() {
     this.fetchUsers();
     this.checkLoggedInUser();
+    this.fetchProducts();
+    this.fetchOrders();
   },
 };
 
@@ -655,123 +760,128 @@ const WishList = {
   
 
   
-<div class="home-container">
-<!-- Tableau 1 - Wish List -->
-  <div>
-    <h1 class="text-center">Wish List</h1>
+<div class="home-container items-center">
+  <!-- Tableau 1 - Wish List -->
 
+  <div class="max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-white-800 text-center items-center">
+    <h1 class="text-center">Wish List</h1>
     <div v-if="liked.length === 0">
       <p>Your wish list is empty.</p>
     </div>
 
-    <div v-else class="card-cart-container">
-      <div class="card-container">
-        <div v-for="product in liked" class="card">
-
-          <div class="img-container">
-            <img :src="product.img" />
-          </div>
-
-          <div class="card-text">
-            <h3>{{ product.name }}</h3>
-            <p style="background: #2eb7eb;
-            font-weight: bold;
-            padding: 4px 6px;
-            color: white;
-            border-radius: 4px;">{{ product.price }}€</p>
-          </div>
-
-          <div class="card-icons">
-            <div class="like-container">
-              <input
-                type="checkbox"
-                :value="product"
-                name="checkbox"
-                v-bind:id="product.id"
-                v-model="liked"
-                @click="setLikeCookie()"
-              />
-              <label v-bind:for="product.id">
-                <i class="fas fa-heart"></i>
-              </label>
-            </div>
-
-            <div class="add-to-cart">
-              <button v-on:click="addToCart(product)" :disabled="!isProductInStock(product)">
-                <i class="fas fa-shopping-cart"></i>
-              </button>
-              <span v-if="!isProductInStock(product)" class="out-of-stock">Out of Stock</span>
-              <span v-else class="stock">Available: {{ product.stock }}</span>
-            </div>
-          </div>
-        </div>
-    </div>
-  </div>
-
-  <!-- Most Sold Item -->
-    <div class="section-container">
-      <div v-if="mostSoldItem" class="most-sold-item card-cart-container">
-        <h2>Most Sold Item</h2>
+      <div v-else class="card-cart-container">
         <div class="card-container">
-          <div class="card">
+          <div v-for="product in liked" class="card">
+
             <div class="img-container">
-              <img :src="mostSoldItem.img" />
+              <img :src="product.img" />
             </div>
+
             <div class="card-text">
-              <h3>{{ mostSoldItem.name }}</h3>
+              <h3>{{ product.name }}</h3>
               <p style="background: #2eb7eb;
-                font-weight: bold;
-                padding: 4px 6px;
-                color: white;
-                border-radius: 4px;">{{ mostSoldItem.price }}€</p>
+              font-weight: bold;
+              padding: 4px 6px;
+              color: white;
+              border-radius: 4px;">{{ product.price }}€</p>
             </div>
-            <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
+
             <div class="card-icons">
               <div class="like-container">
                 <input
                   type="checkbox"
-                  :value="mostSoldItem"
+                  :value="product"
                   name="checkbox"
-                  v-bind:id="mostSoldItem.id"
+                  v-bind:id="product.id"
                   v-model="liked"
                   @click="setLikeCookie()"
                 />
-                <label v-bind:for="mostSoldItem.id">
+                <label v-bind:for="product.id">
                   <i class="fas fa-heart"></i>
                 </label>
               </div>
+
               <div class="add-to-cart">
-                <button v-on:click="addToCart(mostSoldItem)" :disabled="!isProductInStock(mostSoldItem)">
+                <button v-on:click="addToCart(product)" :disabled="!isProductInStock(product)">
                   <i class="fas fa-shopping-cart"></i>
                 </button>
-                <span v-if="!isProductInStock(mostSoldItem)" class="out-of-stock">Out of Stock</span>
-                <span v-else class="stock">Available: {{ mostSoldItem.stock }}</span>
+                <span v-if="!isProductInStock(product)" class="out-of-stock">Out of Stock</span>
+                <span v-else class="stock">Available: {{ product.stock }}</span>
               </div>
             </div>
           </div>
-        </div>
       </div>
-      <div v-else>
-        <p>Loading...</p>
-      </div>
-    </div>
+  </div>
+  <br><br>
   
-  
+    
+  <div class="section-container">
+  <table class="max-w-full w-4/5 mx-auto">
+    <thead class="max-w-full w-4/5 mx-auto table-heading">
+      <tr>
+        <th>
+          <h2 class="text-center">Most Sold Item</h2>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <span>Here is our best selling item, try it out. &emsp;&emsp;</span> <br> <span>You won't regret it!</span>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div v-if="mostSoldItem" class="most-sold-item card-cart-container items-center justify-center">
+            <div class="card-container">
+              <div class="card">
+                <div class="img-container">
+                  <img :src="mostSoldItem.img" />
+                </div>
+                <div class="card-text">
+                  <h3>{{ mostSoldItem.name }}</h3>
+                  <p style="background: #2eb7eb;
+                    font-weight: bold;
+                    padding: 4px 6px;
+                    color: white;
+                    border-radius: 4px;">{{ mostSoldItem.price }}€</p>
+                </div>
+                <p>Copies Sold: {{ mostSoldItem.quantity }}</p>
+                <div class="card-icons">
+                  <div class="like-container">
+                    <input
+                      type="checkbox"
+                      :value="mostSoldItem"
+                      name="checkbox"
+                      v-bind:id="mostSoldItem.id"
+                      v-model="liked"
+                      @click="setLikeCookie()"
+                    />
+                    <label v-bind:for="mostSoldItem.id">
+                      <i class="fas fa-heart"></i>
+                    </label>
+                  </div>
+                  <div class="add-to-cart">
+                    <button v-on:click="addToCart(mostSoldItem)" :disabled="!isProductInStock(mostSoldItem)">
+                      <i class="fas fa-shopping-cart"></i>
+                    </button>
+                    <span v-if="!isProductInStock(mostSoldItem)" class="out-of-stock">Out of Stock</span>
+                    <span v-else class="stock">Available: {{ mostSoldItem.stock }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <p>Loading...</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
 
-    <!-- Best Customer -->
-    <h1>Best Customer</h1>
-    <div class ="best-customer-container">
-      <div v-if="bestCustomer">
-        <p>Customer ID: {{ bestCustomer.userID }}</p>
-        <p>Firstname: {{ bestCustomer.firstName }}</p>
-        <p>Lastname: {{ bestCustomer.lastName }}</p>
-        <p>Number of Products Bought: {{ this.maxSoldProducts }}</p>
-      </div>
-
-      <div v-else>
-        <p>Loading...</p>
-      </div>
-    </div>
+  </div>
 
       <!-- cart display -->
       <transition name="cart-anim">
@@ -857,18 +967,6 @@ const WishList = {
     this.liked = this.$cookies.get("like") ? this.$cookies.get("like") : [];
   },
   computed: {
-    bestCustomer() {
-      const customerStats = this.calculateCustomerStats();
-      const bestCustomerID = this.findBestCustomerID(customerStats);
-
-      // Find the customer with the matching ID
-      const bestCustomer = this.users.find(
-        (user) => user.userID === parseInt(bestCustomerID)
-      );
-
-      // Return the best customer information
-      return bestCustomer;
-    },
     mostSoldItem() {
       const mostSoldItem = this.findMostSoldItem();
       const { id, quantity } = mostSoldItem;
@@ -901,24 +999,6 @@ const WishList = {
     },
   },
   methods: {
-    calculateCustomerStats() {
-      const customerStats = {};
-
-      // Iterate over the orders and calculate the quantity of products bought by each customer
-      for (const order of this.orders) {
-        const { userID, products } = order;
-
-        if (!customerStats[userID]) {
-          customerStats[userID] = 0;
-        }
-
-        for (const product of products) {
-          customerStats[userID] += product.quantity;
-        }
-      }
-      return customerStats;
-    },
-
     findBestCustomerID(customerStats) {
       let bestCustomerID = null;
       let maxQuantity = 0;
