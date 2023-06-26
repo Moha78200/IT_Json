@@ -11,14 +11,14 @@
     "name": "Bloodborne",
     "price": 20,
     "img": "assets/img/bloodborne.jpeg",
-    "stock": 8
+    "stock": 7
   },
   {
     "id": 3,
     "name": "Call Of Duty: Modern Warfare 2",
     "price": 55,
     "img": "assets/img/cod-mw2.png",
-    "stock": 4
+    "stock": 3
   },
   {
     "id": 4,
@@ -30,9 +30,9 @@
   {
     "id": 5,
     "name": "God Of War: Ragnarok",
-    "price": 45,
+    "price": 43,
     "img": "assets/img/God-Of-War-Ragnarok.jpg",
-    "stock": 2
+    "stock": 3
   },
   {
     "id": 6,

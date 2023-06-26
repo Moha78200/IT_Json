@@ -140,5 +140,23 @@
     ],
     "status": "Delivered",
     "totalPrice": 70
+  },
+  {
+    "orderID": 8,
+    "deliveryDate": "2023-07-01",
+    "userID": 1,
+    "deliveryAddress": "123 Main St",
+    "products": [
+      {
+        "id": 2,
+        "quantity": 1
+      },
+      {
+        "id": 3,
+        "quantity": 1
+      }
+    ],
+    "status": "Delivered",
+    "totalPrice": 75
   }
 ]

@@ -1120,8 +1120,8 @@ const adminPage = {
           <tr v-for="product in products" :key="product.id">
             <td class="border-b border-l px-4 py-2 text-center">{{ product.id }}</td>
             <td class="border-b px-4 py-2 text-center"><input type="text" v-model="product.name" /></td>
-            <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.price" /></td>
-            <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.stock" /></td>
+            <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.price" style="width: 50px" /></td>
+            <td class="border-b px-4 py-2 text-center"><input type="number" v-model="product.stock" style="width: 50px" /></td>
             <td class="border-b px-4 py-2 text-center">
               <button :class="{
                 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded': true,
@@ -1235,9 +1235,9 @@ const addProduct = {
 
     <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
       <div class="flex items-center justify-center"
-        <h1 class="text-lg font-semibold text-gray-700 capitalize dark:text-white mt-16 text-center">Add Product</h2>
+        <h1 class="text-lg font-semibold text-gray-700 capitalize dark:text-white text-center">Add Product</h2>
       </div>
-      <form @submit.prevent="saveProduct" class="mt-4">
+      <form @submit.prevent="saveProduct" >
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
             <label class="text-blue-700 dark:text-gray-200" for="name">Name</label>
