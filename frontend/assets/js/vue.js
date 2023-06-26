@@ -1234,14 +1234,14 @@ const addProduct = {
   template: `
   
 
-    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-gray-800">
+    <section class="max-w-4xl p-6 mx-auto bg-white rounded-md shadow-md dark:bg-white-800">
       <div class="flex items-center justify-center"
         <h1 class="text-lg font-semibold text-gray-700 capitalize dark:text-white text-center">Add Product</h2>
       </div>
       <form @submit.prevent="saveProduct" >
         <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
           <div>
-            <label class="text-blue-700 dark:text-gray-200" for="name">Name</label>
+            <label class="text-gray-700 dark:text-gray-200" for="name">Name</label>
             <input id="name" type="text" class="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border border-gray-200 rounded-md dark:bg-gray-800 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 focus:ring-blue-300 focus:ring-opacity-40 dark:focus:border-blue-300 focus:outline-none focus:ring" v-model="product.name" required>
           </div>
 
