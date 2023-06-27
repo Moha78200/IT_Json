@@ -258,8 +258,12 @@ const Login = {
       }
     },
     logout() {
+      // logout current user
       this.isLoggedIn = false;
       sessionStorage.removeItem("loggedInUser");
+
+      // delete like cookies
+      this.$cookies.remove("like");
     },
     register(event) {
       event.preventDefault();
@@ -760,10 +764,10 @@ const WishList = {
   
 
   
-<div class="home-container items-center">
+<div class="home-container justify-center flex">
   <!-- Tableau 1 - Wish List -->
 
-  <div class="max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-white-800 text-center items-center">
+  <div class=" w-4/5 p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-white-800 text-center items-center min-w-min">
     <h1 class="text-center">Wish List</h1>
     <div v-if="liked.length === 0">
       <p>Your wish list is empty.</p>
@@ -816,7 +820,7 @@ const WishList = {
   
     
   <div class="section-container">
-  <table class="max-w-full w-4/5 mx-auto">
+  <table class=" max-w-full w-96 mx-auto">
     <thead class="max-w-full w-4/5 mx-auto table-heading">
       <tr>
         <th>
@@ -885,7 +889,7 @@ const WishList = {
 
       <!-- cart display -->
       <transition name="cart-anim">
-        <div v-if="cart.length > 0" class="shopping-cart" id="shopping-cart">
+        <div v-if="cart.length > 0" class="shopping-cart" id="shopping-cart" style="margin-top: 10%">
           <h2>Cart</h2>
 
           <transition-group name="item-anim" tag="div" class="item-group">
