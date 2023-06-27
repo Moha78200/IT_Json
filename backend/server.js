@@ -201,7 +201,6 @@ app.route('/orders')
   });
 
 
-
 app.get('/products', (req, res) => {
   try {
     const { productID } = req.query;
@@ -300,7 +299,6 @@ app.put('/admin/products/:productID', (req, res) => {
 
 
 // Add products
-
 // Set up multer storage for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -383,7 +381,6 @@ app.get('/wished', (req, res) => {
     res.status(500).json({ error: 'An error occurred while fetching product information.' });
   }
 });
-
 
 
 app.listen(port, () => {
