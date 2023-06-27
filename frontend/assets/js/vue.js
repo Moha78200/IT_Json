@@ -48,7 +48,7 @@ const Login = {
       <!-- LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
       <div class="grid grid-cols-2">
         <div class="LOGIN ">
-          <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 p-0">
+          <div class="mx-auto max-w-screen-xl px-4 py-0 sm:px-6 lg:px-8 p-0">
             <form v-if="!isLoggedIn" @submit="login" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Log In</h1>
@@ -91,7 +91,7 @@ const Login = {
 
         <div class="REGISTER">
         
-          <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 p-0">
+          <div class="mx-auto max-w-screen-xl px-4 py-0 sm:px-6 lg:px-8 p-0">
             <form v-if="!isLoggedIn" @submit="register" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Register</h1>
