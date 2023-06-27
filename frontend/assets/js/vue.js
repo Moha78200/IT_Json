@@ -1,60 +1,58 @@
 const Login = {
   template: `
   <section>
-<br><br><br><br>
-<div class="best-customer-container max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-white-800 text-center items-center">
-<h2>Best Customer</h2>
+    <br><br><br><br>
+    <div class="best-customer-container max-w-4xl p-6 mx-auto bg-white rounded-lg shadow-lg dark:bg-white-800 text-center items-center">
+    <h2>Best Customer</h2>
 
-<div v-if="bestCustomer" class="items-center justify-center">
-  <span>Shout out to our best customer!!! Try to beat him.</span>
-  <div class="table-container">
-    <table class="max-w-full w-4/5 mx-auto">
-      <thead>
-        <tr>
-          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Customer ID</th>
-          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Firstname</th>
-          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Lastname</th>
-          <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Number of Products Bought</th>
-        </tr>
-      </thead>
-      <tbody class="items-center rounded-lg">
-        <tr>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.userID }}</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.firstName }}</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.lastName }}</td>
-          <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ maxSoldProducts }}</td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-</div>
+    <div v-if="bestCustomer" class="items-center justify-center">
+      <span>Shout out to our best customer!!! Try to beat him.</span>
+      <div class="table-container">
+        <table class="max-w-full w-4/5 mx-auto">
+          <thead>
+            <tr>
+              <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Customer ID</th>
+              <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Firstname</th>
+              <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Lastname</th>
+              <th class="table-heading whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">Number of Products Bought</th>
+            </tr>
+          </thead>
+          <tbody class="items-center rounded-lg">
+            <tr>
+              <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.userID }}</td>
+              <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.firstName }}</td>
+              <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ bestCustomer.lastName }}</td>
+              <td class="whitespace-nowrap px-4 py-2 text-gray-700 text-center">{{ maxSoldProducts }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
 
-<div v-else>
-  <p>Loading...</p>
-</div>
-</div>
+    <div v-else>
+      <p>Loading...</p>
+    </div>
+    </div>
 
 
   <!--------------------------------------------------------------------------------------------------------->
 
 
-    <section>
-    <div class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
-    <br> <br>
-      <button v-if="isLoggedIn" @click="logout" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white hover:bg-blue-600">
-        Logout
-      </button>
-    </div>
+    <div>
+      <div v-if="isLoggedIn" class="container py-10 px-10 mx-0 min-w-full flex flex-col items-center">
+        <button @click="logout" class="inline-block rounded-lg bg-blue-500 px-5 py-3 text-sm font-medium text-white hover:bg-blue-600">
+          Logout
+        </button>
+      </div>
 
       <!-- LOGINNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN -->
       <div class="grid grid-cols-2">
-        <div class="LOGIN mt-0">
-          <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+        <div class="LOGIN ">
+          <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 p-0">
             <form v-if="!isLoggedIn" @submit="login" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Log In</h1>
               </div>
-              <br><br><br><br>
               <div>
                 <label for="email" class="sr-only">Email</label>
                 <div class="relative">
@@ -93,7 +91,7 @@ const Login = {
 
         <div class="REGISTER">
         
-          <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8">
+          <div class="mx-auto max-w-screen-xl px-4 py-16 sm:px-6 lg:px-8 p-0">
             <form v-if="!isLoggedIn" @submit="register" action="" class="mx-auto mb-0 mt-8 max-w-md space-y-4">
               <div class="mx-auto max-w-lg text-center">
                 <h1 class="text-2xl font-bold sm:text-3xl">Register</h1>
@@ -152,7 +150,7 @@ const Login = {
         </div>
                   
       </div>
-    </section>
+    </div>
 
     
   </section>
@@ -821,7 +819,7 @@ const WishList = {
     
   <div class="section-container">
   <table class=" max-w-full w-96 mx-auto">
-    <thead class="max-w-full w-4/5 mx-auto table-heading">
+    <thead class="max-w-full w-4/5 mx-auto table-heading bg-blue-100">
       <tr>
         <th>
           <h2 class="text-center">Most Sold Item</h2>
@@ -930,7 +928,7 @@ const WishList = {
             <h6>Total articles : {{ itemTotalAmount }}</h6>
           </div>
           <div class="expedited-delivery">
-              <label for="expedited-delivery-checkbox">Expedited Delivery</label>
+              <label for="expedited-delivery-checkbox">Express Delivery</label>
               <input type="checkbox" id="expedited-delivery-checkbox" v-model="expeditedDelivery" />
             </div>
           <div class="shipping-address">

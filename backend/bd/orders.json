@@ -158,5 +158,33 @@
     ],
     "status": "Delivered",
     "totalPrice": 75
+  },
+  {
+    "orderID": 9,
+    "deliveryDate": "2023-07-02",
+    "userID": 1,
+    "deliveryAddress": "adress de test",
+    "products": [
+      {
+        "id": 4,
+        "quantity": 1
+      }
+    ],
+    "status": "Pending Delivery",
+    "totalPrice": 10
+  },
+  {
+    "orderID": 10,
+    "deliveryDate": "2023-06-29",
+    "userID": 3,
+    "deliveryAddress": "zdzd",
+    "products": [
+      {
+        "id": 2,
+        "quantity": 1
+      }
+    ],
+    "status": "Pending Delivery",
+    "totalPrice": 20
   }
 ]
